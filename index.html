@@ -1,0 +1,2138 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Marque Simple</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Charte inspirée de Google : fond gris très clair, cartes blanches à ombre légère, bleu en accent, vert, jaune et rouge pour balles, prises et retraits. Bannière photo en tête, puis tableau d'affichage et saisie en deux colonnes dès 880px. */
+:root{
+  --bg:#F8F9FA; --surface:#FFFFFF; --surface-2:#F1F3F4; --line:#DADCE0; --ink:#202124; --muted:#5F6368;
+  --blue:#1A73E8; --blue-hover:#1765CC; --blue-ink:#174EA6; --blue-bg:#E8F0FE;
+  --green:#1E8E3E; --green-bg:#E6F4EA; --green-ink:#0D652D;
+  --yellow:#F9AB00; --yellow-bg:#FEF7E0; --yellow-ink:#7A4F01;
+  --red:#D93025; --red-bg:#FCE8E6; --red-ink:#A50E0E;
+  --shadow:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+  --display:'Google Sans','Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --body:'Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font:16px/1.5 var(--body);
+  padding-block:12px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:16px}
+h1,h2,h3,legend{margin:0}
+button,input,select,textarea{font:inherit}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior-y:contain}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* Bannière */
+.hero{position:relative}
+.banner{position:relative;border-radius:20px;overflow:hidden;background:var(--surface-2);box-shadow:var(--shadow);aspect-ratio:1.81/1}
+@media (min-width:700px){.banner{aspect-ratio:2.4/1}}
+.banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+
+.banner.noimg{background:var(--blue)}
+.banner-text{position:absolute;left:16px;bottom:14px;right:116px;z-index:1;color:#fff}
+.banner-text h1{font:500 28px/1.1 var(--display)}
+.banner-text p{margin:2px 0 0;font-size:14px;color:rgba(255,255,255,.88)}
+@media (min-width:700px){.banner-text h1{font-size:34px}.banner-text{left:24px;bottom:20px}}
+.banner-tools{position:absolute;right:12px;bottom:12px;z-index:1;display:flex;gap:8px}
+.icon-btn{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:#202124;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
+.icon-btn:hover{background:#fff}
+.icon-btn svg{width:22px;height:22px;fill:currentColor}
+.wx{position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;max-width:calc(100% - 24px);background:rgba(255,255,255,.95);border-radius:999px;box-shadow:var(--shadow);overflow:hidden}
+.wxbtn{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:#202124;padding:0 14px 0 12px;min-height:40px;cursor:pointer;font-size:14px;font-weight:500;min-width:0}
+.wxbtn svg{width:18px;height:18px;fill:var(--blue);flex:none}
+.wxbtn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.wxlink{display:flex;align-items:center;gap:4px;padding:0 12px 0 12px;min-height:40px;border-left:1px solid var(--line);color:var(--blue-ink);font-size:14px;font-weight:500;text-decoration:none;flex:none}
+.wxlink:hover{background:var(--blue-bg)}
+.wxlink svg{width:16px;height:16px;fill:currentColor}
+.wxpanel{position:absolute;top:60px;right:12px;z-index:3;width:min(320px,calc(100% - 24px));background:var(--surface);border-radius:16px;box-shadow:0 4px 8px 3px rgba(60,64,67,.15),0 1px 3px rgba(60,64,67,.3);padding:16px;display:grid;gap:10px}
+.wxpanel .row2{display:flex;gap:8px;flex-wrap:wrap}
+.wxpanel .primary{min-height:44px;font-size:15px;flex:1}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar:not(:has(button:not([hidden]))){display:none}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+.stack{display:grid;gap:16px;align-content:start;min-width:0}
+.cols{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:880px){.cols{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}}
+
+/* Boutons */
+.btn,.primary,.ghost{
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  border-radius:14px;min-height:52px;padding:8px 10px;cursor:pointer;
+  font-weight:500;font-size:16px;line-height:1.2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;
+  transition:background .15s;
+}
+.btn:hover{background:var(--surface-2)}
+.btn:active,.primary:active{transform:scale(.98)}
+.btn:disabled,.primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn .s{font-size:12px;font-weight:400;color:var(--muted)}
+.btn.ball{background:var(--green-bg);color:var(--green-ink);border-color:transparent}
+.btn.ball:hover{background:#D3EBDA}
+.btn.strike{background:var(--yellow-bg);color:var(--yellow-ink);border-color:transparent}
+.btn.strike:hover{background:#FCEFC4}
+.btn.out{background:var(--red-bg);color:var(--red-ink);border-color:transparent}
+.btn.out:hover{background:#F8D7D3}
+.btn.hit{background:var(--blue);color:#fff;border-color:transparent}
+.btn.hit:hover{background:var(--blue-hover)}
+.btn.hit .s{color:rgba(255,255,255,.88)}
+.btn.undo{min-height:48px;flex-direction:row;gap:8px;border-radius:999px;color:var(--blue-ink)}
+.btn.small{min-height:44px;font-size:15px}
+.span2{grid-column:span 2}
+.primary{background:var(--blue);color:#fff;border-color:transparent;border-radius:999px;min-height:52px;font-size:17px}
+.primary:hover{background:var(--blue-hover)}
+.ghost{min-height:44px;padding:6px 16px;font-size:14px;flex-direction:row;border-radius:999px;color:var(--blue-ink)}
+.ghost:hover{background:var(--blue-bg)}
+.ghost.warn{border-color:var(--red);color:var(--red-ink);background:var(--red-bg)}
+
+/* Tableau d'affichage */
+.board{background:var(--surface);border-radius:16px;padding:16px;display:grid;gap:12px;min-width:0;box-shadow:var(--shadow)}
+.board-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px 12px;flex-wrap:wrap}
+.bh-l{display:grid;gap:2px;min-width:0}
+.half{font:500 22px/1.15 var(--display)}
+.bat{color:var(--muted);font-size:14px}
+.clock{display:grid;justify-items:end;background:var(--blue-bg);color:var(--blue-ink);border-radius:12px;padding:6px 14px}
+.clock .k{font:500 11px/1.3 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.clock .t{font:500 30px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+table.line{border-collapse:collapse;width:100%;font-family:var(--body);font-variant-numeric:tabular-nums}
+.line th,.line td{text-align:center;padding:8px 0;min-width:30px;font-size:20px;font-weight:500}
+.line th{font-size:12px;color:var(--muted);padding-bottom:6px;border-bottom:1px solid var(--line)}
+.line th.curh{color:var(--blue)}
+.line tr+tr td{border-top:1px solid var(--line)}
+.line .team{text-align:left;position:sticky;left:0;background:var(--surface);padding-right:10px;min-width:96px;font-size:16px}
+.line .nm{display:block;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.line .sep{border-left:1px solid var(--line);padding-left:4px}
+.line td.cur{background:var(--blue-bg);color:var(--blue-ink);font-weight:700;border-radius:6px}
+.line .tot{font-size:24px;font-weight:700;color:var(--blue-ink)}
+.legend{margin:0;font-size:12px;color:var(--muted)}
+.now{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:baseline;background:var(--surface-2);border-radius:12px;padding:12px}
+.now .k{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.now .v{min-width:0;overflow-wrap:anywhere}
+.now .big{font:500 20px/1.2 var(--display)}
+.now .dim{color:var(--muted);font-size:14px}
+.result{background:var(--green-bg);border-radius:12px;padding:12px;display:grid;gap:10px}
+.result .txt{font:500 20px/1.25 var(--display);color:var(--green-ink)}
+
+/* Situation */
+.sit{display:grid;grid-template-columns:minmax(130px,180px) minmax(0,1fr);gap:18px;align-items:center}
+.diamond{width:100%;height:auto;display:block}
+.diamond .field{fill:none;stroke:var(--line);stroke-width:3;stroke-linejoin:round}
+.diamond .mound{fill:var(--line)}
+.diamond .plate{fill:var(--surface);stroke:var(--muted);stroke-width:3;stroke-linejoin:round}
+.base{cursor:pointer;outline:none}
+.base rect{fill:var(--surface);stroke:var(--muted);stroke-width:3}
+.base.occ rect{fill:var(--yellow);stroke:var(--yellow-ink)}
+.base:focus-visible rect{stroke:var(--blue);stroke-width:6}
+.base.sel rect{stroke:var(--blue);stroke-width:6}
+.rl{font:700 15px var(--display);fill:#3C2A00;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.bso{display:grid;gap:11px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lab{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dots{display:flex;gap:8px}
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line)}
+.dot.on.ball{background:var(--green);border-color:var(--green)}
+.dot.on.strike{background:var(--yellow);border-color:var(--yellow)}
+.dot.on.out{background:var(--red);border-color:var(--red)}
+.count{font:500 36px/1 var(--display);font-variant-numeric:tabular-nums}
+.hint{margin:0;font-size:13px;color:var(--muted)}
+
+/* Coureur et remplacement */
+.rp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rp-head strong{min-width:0;overflow-wrap:anywhere;font-weight:500}
+.panel-grid{display:grid;gap:10px}
+.field{display:grid;gap:6px;border:0;padding:0;margin:0;min-width:0}
+.field label,.field legend,.field .lbl{font-weight:500;font-size:14px}
+.field input[type=text],.field select,.panel-grid select,.panel-grid input[type=text],.saved select{min-height:46px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:6px 12px;width:100%;min-width:0;font-size:16px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+
+/* Saisie */
+.group{display:grid;gap:8px}
+.group h2{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btns{display:grid;gap:8px}
+.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+/* Journal */
+.log{list-style:none;margin:0;padding:0;max-height:240px;overflow-y:auto;display:grid}
+.log li{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line)}
+.log li:first-child{border-top:0}
+.log .tag{font:500 14px var(--display);min-width:34px;color:var(--blue-ink)}
+.log .empty{color:var(--muted)}
+.logbar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.logbar h2{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.copyarea{width:100%;min-height:110px;margin-top:8px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink);padding:8px;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace}
+
+/* Préparation de la partie */
+.setup{display:grid;gap:16px}
+.setup h2{font:500 24px/1.2 var(--display)}
+.teams{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.teams{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.team{display:grid;gap:14px;align-content:start}
+.lineup{display:grid;gap:6px}
+.lu-head,.lu-row{display:grid;grid-template-columns:22px 48px minmax(0,1fr) 84px;gap:6px;align-items:center}
+.lu-head{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lu-row .ord{font:500 16px var(--display);color:var(--muted);text-align:center}
+.lu-row input,.lu-row select,.pit input{min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:4px 8px;width:100%;min-width:0;font-size:16px}
+.pit{display:grid;grid-template-columns:52px minmax(0,1fr);gap:6px}
+.rowbtns{display:flex;gap:8px;flex-wrap:wrap}
+.teamh{font:500 22px/1.15 var(--display);overflow-wrap:anywhere;margin:0}
+.sub{font-weight:400;color:var(--muted);font-size:13px}
+.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:520px}
+.chip{position:relative;border:1px solid var(--line);border-radius:14px;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;background:var(--surface)}
+.chip input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.chip .n{font:500 28px/1 var(--display)}
+.chip .s{font-size:12px;color:var(--muted);min-height:16px}
+.chip:has(input:checked){background:var(--blue-bg);border-color:var(--blue);color:var(--blue-ink)}
+.chip:has(input:checked) .s{color:var(--blue-ink)}
+.chip:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.rules{margin:0;padding-left:18px;color:var(--muted);font-size:14px;display:grid;gap:4px}
+.startbar{display:grid;gap:10px;max-width:560px}
+
+/* Équipes enregistrées */
+.saved{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.bench{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.bench .hint{flex-basis:100%;margin:0}
+.blabel{flex-basis:100%;font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pchip{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:var(--surface);overflow:hidden;max-width:100%}
+.pchip button{border:0;background:transparent;color:var(--ink);cursor:pointer;min-height:44px;padding:0 12px;font-size:15px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pchip button:hover{background:var(--blue-bg)}
+.pchip button+button{border-left:1px solid var(--line);color:var(--muted);padding:0 14px;font-size:18px;flex:none}
+.pchip button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.pchip .m{font-weight:400;color:var(--muted);margin-left:6px;font-size:13px}
+
+/* Statistiques */
+.statshead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.statshead h2{font:500 24px/1.2 var(--display)}
+.sect{display:grid;gap:10px}
+.sect h3{font:500 20px/1.2 var(--display)}
+.sect h4{margin:0;font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.st{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:15px}
+.st th,.st td{padding:8px;text-align:right;white-space:nowrap;border-top:1px solid var(--line)}
+.st thead th{font:500 12px var(--display);letter-spacing:.06em;color:var(--muted);border-top:0;text-transform:uppercase}
+.st .pl{text-align:left;position:sticky;left:0;background:var(--surface);min-width:140px;padding-right:12px}
+.st .pn{display:block;font-weight:500}
+.st .pm{display:block;font-size:12px;color:var(--muted)}
+.st tfoot td{font-weight:700;border-top:2px solid var(--ink)}
+.st .key{font-weight:700;color:var(--blue-ink)}
+.minor{margin:0;font-size:13px;color:var(--muted)}
+.legend2{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+
+.toast{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none;
+  padding:0 max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px))}
+.toast span{background:#323232;color:#fff;padding:12px 18px;border-radius:8px;font-size:14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.toast.show span{opacity:1;transform:none}
+.vh{font:500 24px/1.2 var(--display)}
+.wxbtn .wxnow{max-width:none;margin-left:2px;padding-left:8px;border-left:1px solid var(--line)}
+.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.award{display:grid;gap:2px;background:var(--surface-2);border-radius:12px;padding:12px;min-width:0}
+.result .award{background:var(--surface)}
+.ak{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--blue-ink)}
+.an{font:500 18px/1.2 var(--display);overflow-wrap:anywhere}
+.as{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.pa{display:inline-block;font-weight:700;font-size:13px;border-radius:6px;padding:1px 5px;margin:1px;background:var(--surface-2);color:var(--ink)}
+.pa.h{background:var(--blue-bg);color:var(--blue-ink)}
+.pa.w{background:var(--green-bg);color:var(--green-ink)}
+.pa.o{background:var(--red-bg);color:var(--red-ink)}
+.pa.e,.pa.s{background:var(--yellow-bg);color:var(--yellow-ink)}
+.pa sup{font-size:10px;margin-left:1px}
+.tp-head,.tp-row{display:grid;grid-template-columns:52px minmax(0,1fr) 84px 44px;gap:6px;align-items:center}
+.tp-head{font:500 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tp-row input,.tp-row select{min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:4px 8px;width:100%;min-width:0;font-size:16px}
+.xbtn{width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:22px;cursor:pointer}
+.xbtn:hover{background:var(--red-bg);color:var(--red-ink)}
+.qbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;
+  padding:8px max(8px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
+  background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -2px 6px rgba(60,64,67,.12)}
+.qbar .btn{min-height:56px;font-size:15px;padding:6px 4px}
+body.qb{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+@media (min-width:880px){.qbar{display:none}body.qb{padding-bottom:0}}
+@media (pointer:coarse){.btn.hit,.btn.ball,.btn.strike,.btn.out{min-height:62px}}
+#btnVib{min-width:48px;padding:8px 12px}
+#btnVib.off{opacity:.5}
+.hm{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.hm:first-child{border-top:0}
+.hm .t{font:500 16px/1.25 var(--display);overflow-wrap:anywhere}
+.hm .m{font-size:13px;color:var(--muted)}
+.hm .b{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hm .b button{min-height:40px;padding:6px 12px;font-size:14px}
+.ghost.warn{background:var(--red-bg);color:var(--red-ink);border-color:transparent}
+.rulerow{display:flex;gap:10px;align-items:center;min-height:44px}
+.rulerow input{width:22px;height:22px}
+@media (max-width:480px){
+  .board,.card{padding:14px}
+  .line th,.line td{min-width:20px;font-size:16px;padding:8px 0}
+  .line th{font-size:11px}
+  .line .tot{font-size:20px}
+  .line .team{min-width:64px;max-width:84px;font-size:14px;padding-right:6px}
+  .line .nm{max-width:84px;white-space:normal;overflow-wrap:anywhere;line-height:1.15}
+  .line .sep{padding-left:2px}
+  .sit{grid-template-columns:minmax(100px,132px) minmax(0,1fr);gap:12px}
+  .row{gap:6px}
+}
+@media (prefers-reduced-motion:reduce){.toast span{transition:none}.btn:active,.primary:active{transform:none}}
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="banner" id="banner">
+      <img id="bannerImg" src="banner.jpg" alt="Photo de l'équipe sur le terrain" width="1600" height="882">
+      
+      <div class="banner-tools">
+        <button type="button" class="icon-btn" id="photoReset" title="Remettre la photo d'origine" aria-label="Remettre la photo d'origine" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="photoBtn" title="Changer la photo" aria-label="Changer la photo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2 7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-1.8a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/></svg>
+        </button>
+        <input type="file" id="photoIn" accept="image/*" hidden>
+      </div>
+    </div>
+    <div class="wx">
+      <button type="button" class="wxbtn" id="wxBtn" aria-expanded="false" aria-controls="wxPanel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+        <span id="wxPlace">Ajouter le lieu</span>
+        <span class="wxnow" id="wxNow" hidden></span>
+      </button>
+      <a class="wxlink" id="wxLink" href="https://www.google.com/search?q=m%C3%A9t%C3%A9o" target="_blank" rel="noopener" hidden>Météo
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+      </a>
+    </div>
+    <form class="wxpanel" id="wxPanel" hidden>
+      <div class="field">
+        <label for="wxIn">Lieu du match</label>
+        <input type="text" id="wxIn" maxlength="40" placeholder="Ville ou terrain" autocomplete="off">
+      </div>
+      <p class="hint" id="wxHint">La météo se met à jour toute seule dès que le lieu est enregistré.</p>
+      <div class="row2">
+        <button type="submit" class="primary">Enregistrer</button>
+        <button type="button" class="ghost" id="wxGeo">Ma position</button>
+        <button type="button" class="ghost" id="wxClear" hidden>Effacer</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" class="ghost" id="btnStats" hidden>Statistiques</button>
+    <button type="button" class="ghost" id="btnBack" hidden>Retour au match</button>
+    <button type="button" class="ghost" id="btnTeams" hidden>Mes équipes</button>
+    <button type="button" class="ghost" id="btnHist" hidden>Historique</button>
+    <button type="button" class="ghost" id="btnVib" title="Vibration au toucher" aria-label="Vibration au toucher">📳</button>
+    <button type="button" class="ghost" id="btnTeamsBack" hidden>Retour</button>
+    <button type="button" class="ghost" id="btnNew" hidden>Nouvelle partie</button>
+  </div>
+
+  <!-- ===== Préparation : line-ups ===== -->
+  <section id="setup" hidden>
+    <form id="setupForm" class="setup">
+      <div class="card" style="display:grid;gap:14px">
+        <h2>Nouvelle partie</h2>
+        <fieldset class="field">
+          <legend>Nombre de manches</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="inn" value="5"><span class="n">5</span><span class="s"></span></label>
+            <label class="chip"><input type="radio" name="inn" value="6"><span class="n">6</span><span class="s"></span></label>
+            <label class="chip"><input type="radio" name="inn" value="7" checked><span class="n">7</span><span class="s">Softball</span></label>
+            <label class="chip"><input type="radio" name="inn" value="9"><span class="n">9</span><span class="s">Baseball</span></label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="ruleMercy">Règle d'écart de points</label>
+          <select id="ruleMercy">
+            <option value="none">Aucune</option>
+            <option value="15-3,10-5">15 pts après 3 manches, 10 pts après 5 manches</option>
+            <option value="10-4">10 pts après 4 manches</option>
+            <option value="8-5">8 pts après 5 manches</option>
+          </select>
+        </div>
+        <label class="rulerow"><input type="checkbox" id="ruleGhost"><span>Coureur en 2e base dès la manche supplémentaire</span></label>
+      </div>
+
+      <div class="teams">
+        <div class="card team">
+          <h2 class="teamh" id="th0"></h2>
+          <div class="field">
+            <label for="tname0">Nom de l'équipe <span class="sub">(bat en haut de la manche)</span></label>
+            <input type="text" id="tname0" data-t="0" data-f="tname" maxlength="24" placeholder="Nom de l'équipe visiteuse" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="saved0">Équipe enregistrée</label>
+            <div class="saved"><select id="saved0"></select><button type="button" class="ghost" data-load="0">Charger</button></div>
+          </div>
+                    <div class="field">
+            <span class="lbl">Ordre des frappeurs</span>
+            <div id="lineup0" class="lineup"></div>
+            <div id="bench0" class="bench"></div>
+            <datalist id="dl0"></datalist>
+            <div class="rowbtns">
+              <button type="button" class="ghost" data-row="add" data-t="0">+ Ajouter un frappeur</button>
+              <button type="button" class="ghost" data-row="del" data-t="0">− Retirer le dernier</button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Lanceur qui ne frappe pas (facultatif)</span>
+            <div class="pit">
+              <input type="text" inputmode="numeric" maxlength="3" id="pnum0" data-t="0" data-f="pnum" placeholder="N°" aria-label="Numéro du lanceur" autocomplete="off">
+              <input type="text" maxlength="28" id="pname0" list="dl0" data-t="0" data-f="pname" placeholder="Nom du lanceur" aria-label="Nom du lanceur" autocomplete="off">
+            </div>
+            <p class="hint">À remplir si le lanceur n'est pas dans l'ordre des frappeurs. Sinon, choisissez le poste L pour l'un des frappeurs.</p>
+          </div>
+        </div>
+
+        <div class="card team">
+          <h2 class="teamh" id="th1"></h2>
+          <div class="field">
+            <label for="tname1">Nom de l'équipe <span class="sub">(bat en bas de la manche)</span></label>
+            <input type="text" id="tname1" data-t="1" data-f="tname" maxlength="24" placeholder="Nom de l'équipe locale" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="saved1">Équipe enregistrée</label>
+            <div class="saved"><select id="saved1"></select><button type="button" class="ghost" data-load="1">Charger</button></div>
+          </div>
+                    <div class="field">
+            <span class="lbl">Ordre des frappeurs</span>
+            <div id="lineup1" class="lineup"></div>
+            <div id="bench1" class="bench"></div>
+            <datalist id="dl1"></datalist>
+            <div class="rowbtns">
+              <button type="button" class="ghost" data-row="add" data-t="1">+ Ajouter un frappeur</button>
+              <button type="button" class="ghost" data-row="del" data-t="1">− Retirer le dernier</button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl">Lanceur qui ne frappe pas (facultatif)</span>
+            <div class="pit">
+              <input type="text" inputmode="numeric" maxlength="3" id="pnum1" data-t="1" data-f="pnum" placeholder="N°" aria-label="Numéro du lanceur" autocomplete="off">
+              <input type="text" maxlength="28" id="pname1" list="dl1" data-t="1" data-f="pname" placeholder="Nom du lanceur" aria-label="Nom du lanceur" autocomplete="off">
+            </div>
+            <p class="hint">À remplir si le lanceur n'est pas dans l'ordre des frappeurs. Sinon, choisissez le poste L pour l'un des frappeurs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="startbar">
+        <button type="submit" class="primary">Démarrer la partie</button>
+        <button type="button" class="ghost" id="resume" hidden>Reprendre la partie en cours</button>
+        <ul class="rules">
+          <li>Les line-ups sont gardés dans ce navigateur. Au démarrage, chaque équipe nommée et ses joueurs sont enregistrés pour les prochains matchs : utilisez « Équipe enregistrée » ou touchez un joueur de l'effectif pour remplir le line-up.</li>
+          <li>Postes : L lanceur · R receveur · 1B, 2B, 3B bases · AC arrêt-court · CG champ gauche · CCG champ centre gauche · CC champ centre · CCD champ centre droit · CD champ droit · FD frappeur désigné. Choisissez CC à trois champs, CCG et CCD à quatre.</li>
+          <li>Pendant le match, le frappeur suivant passe automatiquement. Les statistiques se calculent seules, joueur par joueur.</li>
+          <li>4 balles : but sur balles. 3 prises : retrait. 3 retraits : changement de côté.</li>
+          <li>Démarrer remplace la partie en cours.</li>
+        </ul>
+      </div>
+    </form>
+  </section>
+
+  <!-- ===== Match ===== -->
+  <section id="game" hidden>
+    <div class="cols">
+      <div class="stack">
+        <div class="board">
+          <div class="board-head">
+            <div class="bh-l"><span class="half" id="halfLabel"></span><span class="bat" id="batLabel"></span></div>
+            <div class="clock" role="timer" aria-label="Chronomètre du match"><span class="k" id="clockK">Chrono</span><span class="t" id="clock">00:00</span></div>
+          </div>
+          <div class="scroll"><table class="line" id="line"></table></div>
+          <p class="legend">P points · CS coups sûrs · E erreurs</p>
+          <div class="now" id="now">
+            <span class="k">Au bâton</span><span class="v"><span class="big" id="nowBat"></span> <span class="dim" id="nowStat"></span></span>
+            <span class="k">Ensuite</span><span class="v dim" id="nowNext"></span>
+            <span class="k">Lanceur</span><span class="v dim" id="nowPit"></span>
+          </div>
+          <div class="result" id="result" hidden>
+            <span class="txt" id="resultTxt"></span>
+            <div class="awards" id="awards"></div>
+            <button type="button" class="primary" id="btnStatsEnd">Voir les statistiques du match</button>
+          </div>
+        </div>
+
+        <div class="card sit">
+          <div>
+            <svg class="diamond" viewBox="0 0 200 172" role="group" aria-label="Coureurs sur les bases">
+              <path class="field" d="M100 150 L172 90 L100 30 L28 90 Z"/>
+              <circle class="mound" cx="100" cy="90" r="6"/>
+              <g class="base" id="base2" data-base="1" tabindex="0" role="button" aria-pressed="false"><rect x="84" y="14" width="32" height="32" transform="rotate(45 100 30)"/><text class="rl" id="rl2" x="100" y="30"></text></g>
+              <g class="base" id="base3" data-base="2" tabindex="0" role="button" aria-pressed="false"><rect x="12" y="74" width="32" height="32" transform="rotate(45 28 90)"/><text class="rl" id="rl3" x="28" y="90"></text></g>
+              <g class="base" id="base1" data-base="0" tabindex="0" role="button" aria-pressed="false"><rect x="156" y="74" width="32" height="32" transform="rotate(45 172 90)"/><text class="rl" id="rl1" x="172" y="90"></text></g>
+              <polygon class="plate" points="86,140 114,140 114,152 100,164 86,152"/>
+            </svg>
+          </div>
+          <div class="bso">
+            <div class="row"><span class="lab">Compte</span><span class="count" id="count">0–0</span></div>
+            <div class="row"><span class="lab">Balles</span><span class="dots" id="dB"></span></div>
+            <div class="row"><span class="lab">Prises</span><span class="dots" id="dS"></span></div>
+            <div class="row"><span class="lab">Retraits</span><span class="dots" id="dO"></span></div>
+            <p class="hint">Touchez une base pour gérer un coureur.</p>
+          </div>
+        </div>
+
+        <div class="card" id="runnerPanel" hidden></div>
+      </div>
+
+      <div class="stack">
+        <button type="button" class="btn undo" data-act="undo" id="btnUndo">↶ Annuler la dernière action</button>
+
+        <div class="group">
+          <h2>Lancers</h2>
+          <div class="btns c3">
+            <button type="button" class="btn ball" data-act="ball">Balle</button>
+            <button type="button" class="btn strike" data-act="strike">Prise</button>
+            <button type="button" class="btn strike" data-act="foul">Fausse balle</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Coups sûrs</h2>
+          <div class="btns c4">
+            <button type="button" class="btn hit" data-act="single">Simple<span class="s">1 base</span></button>
+            <button type="button" class="btn hit" data-act="double">Double<span class="s">2 bases</span></button>
+            <button type="button" class="btn hit" data-act="triple">Triple<span class="s">3 bases</span></button>
+            <button type="button" class="btn hit" data-act="homer">Circuit<span class="s">4 bases</span></button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Autres jeux</h2>
+          <div class="btns c2">
+            <button type="button" class="btn out" data-act="out">Retrait</button>
+            <button type="button" class="btn out" data-act="k">Retrait sur prises</button>
+            <button type="button" class="btn out" data-act="dp">Double jeu</button>
+            <button type="button" class="btn" data-act="sac">Sacrifice</button>
+            <button type="button" class="btn" data-act="walk">But sur balles</button>
+            <button type="button" class="btn" data-act="hbp">Frappé par le lanceur</button>
+            <button type="button" class="btn" data-act="error">Erreur de la défense</button>
+            <button type="button" class="btn" data-act="fc">Choix du défenseur</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>Corrections</h2>
+          <div class="btns c2">
+            <button type="button" class="btn small" data-act="runPlus">Point +1</button>
+            <button type="button" class="btn small" data-act="runMinus">Point −1</button>
+            <button type="button" class="btn small" id="btnSub">Remplacement</button>
+            <button type="button" class="btn small" data-act="endhalf">Changer de côté</button>
+            <button type="button" class="btn small span2" data-act="end">Terminer le match</button>
+          </div>
+          <p class="hint">Les points ajoutés ou retirés à la main comptent pour l'équipe, pas pour un joueur.</p>
+        </div>
+
+        <div class="card" id="fcBox" hidden></div>
+
+        <div class="card" id="subBox" hidden>
+          <div class="rp-head"><strong>Remplacement</strong><button type="button" class="ghost" id="subCancel">Fermer</button></div>
+          <div class="panel-grid">
+            <div class="field"><label for="subT">Équipe</label><select id="subT"></select></div>
+            <div class="field"><label for="subSlot">Remplace</label><select id="subSlot"></select></div>
+            <div class="two">
+              <div class="field"><label for="subNum">N°</label><input type="text" id="subNum" inputmode="numeric" maxlength="3" autocomplete="off"></div>
+              <div class="field"><label for="subPos">Poste</label><select id="subPos"></select></div>
+            </div>
+            <div class="field"><label for="subName">Nom du joueur</label><input type="text" id="subName" maxlength="28" autocomplete="off"></div>
+            <button type="button" class="primary" id="subOk">Valider le remplacement</button>
+            <p class="hint">Un joueur au poste L devient le lanceur. « Aucun » sert à changer de lanceur sans changer l'ordre des frappeurs.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="logbar">
+            <h2>Journal</h2>
+            <button type="button" class="ghost" id="btnCopy">Copier le score</button>
+          </div>
+          <ul class="log" id="log"></ul>
+          <textarea id="copyArea" class="copyarea" readonly hidden aria-label="Score de la partie"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="qbar" id="qbar" hidden>
+    <button type="button" class="btn ball" data-act="ball">Balle</button>
+    <button type="button" class="btn strike" data-act="strike">Prise</button>
+    <button type="button" class="btn out" data-act="out">Retrait</button>
+    <button type="button" class="btn hit" data-act="single">Simple</button>
+    <button type="button" class="btn undo" data-act="undo" aria-label="Annuler la dernière action" style="border-radius:14px;justify-content:center">↶</button>
+  </div>
+
+  <!-- ===== Mes équipes ===== -->
+  <section id="teamsView" hidden>
+    <div class="stack" style="gap:16px">
+      <h2 class="vh">Mes équipes</h2>
+      <form class="card" id="newTeamForm">
+        <div class="field">
+          <label for="newTeamName">Nouvelle équipe</label>
+          <div class="saved"><input type="text" id="newTeamName" maxlength="24" placeholder="Nom de l'équipe" autocomplete="off"><button type="submit" class="primary" style="min-height:46px">Créer</button></div>
+        </div>
+      </form>
+      <div id="teamsList" class="stack" style="gap:16px"></div>
+    </div>
+  </section>
+
+  <!-- ===== Historique ===== -->
+  <section id="histView" hidden>
+    <div class="stack" style="gap:16px">
+      <h2 class="vh">Historique</h2>
+      <div class="card sect"><h3>Matchs terminés</h3><div id="histList"></div></div>
+      <div id="seasonBox" class="stack" style="gap:16px"></div>
+      <div class="card sect">
+        <h3>Sauvegarde</h3>
+        <p class="hint" style="font-size:14px">Un fichier contient vos équipes et l'historique des matchs. Gardez-le pour changer de téléphone ou ne rien perdre si le navigateur est nettoyé.</p>
+        <div class="rowbtns">
+          <button type="button" class="primary" id="btnBackup" style="min-height:46px;padding:8px 16px">Exporter la sauvegarde</button>
+          <button type="button" class="ghost" id="btnImportPick">Importer un fichier</button>
+          <button type="button" class="ghost" id="btnBackupCopy">Copier le texte</button>
+        </div>
+        <input type="file" id="importIn" accept=".json,application/json,text/plain" hidden>
+        <details style="margin-top:10px"><summary style="cursor:pointer;min-height:36px">Coller une sauvegarde</summary>
+          <textarea id="importTxt" class="copyarea" aria-label="Texte de la sauvegarde" placeholder="Collez ici le texte copié"></textarea>
+          <button type="button" class="ghost" id="btnImportTxt" style="margin-top:8px">Importer le texte</button>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Statistiques ===== -->
+  <section id="stats" hidden>
+    <div class="stack" style="gap:20px">
+      <div class="statshead">
+        <h2>Statistiques du match</h2>
+        <div class="rowbtns">
+          <button type="button" class="ghost" id="btnImg">Image du résumé</button>
+          <button type="button" class="ghost" id="btnCsv">Export CSV</button>
+          <button type="button" class="ghost" id="btnCopyStats">Copier les statistiques</button>
+        </div>
+      </div>
+      <textarea id="copyArea2" class="copyarea" readonly hidden aria-label="Statistiques du match"></textarea>
+      <div id="statsBody" class="stack" style="gap:20px"></div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span></span></div>
+
+<script>
+(function(){
+  var KEY = 'marque-simple-v2', DKEY = 'marque-simple-lineup-v2', RKEY = 'marque-simple-roster-v1', HKEY = 'marque-simple-hist-v1', VKEY = 'marque-simple-vib-v1';
+    var POS = [['','Poste'],['L','L · Lanceur'],['R','R · Receveur'],['1B','1B · 1re base'],['2B','2B · 2e base'],['3B','3B · 3e base'],
+    ['AC','AC · Arrêt-court'],['CG','CG · Champ gauche'],['CCG','CCG · Champ centre gauche'],['CC','CC · Champ centre'],['CCD','CCD · Champ centre droit'],
+    ['CD','CD · Champ droit'],['FD','FD · Frappeur désigné']];
+  var g = null, undo = [], view = 'setup', ui = { base: null, sub: false }, draft = null, roster = { teams: {} }, hist = [], vibOn = true, dlCache = ['', ''], toastTimer = null;
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+
+  /* ---------- Sauvegarde locale ---------- */
+  function load(){
+    try {
+      var s = localStorage.getItem(KEY);
+      if (s) { var o = JSON.parse(s); if (o && o.g && o.g.pl) { g = o.g; undo = o.undo || []; } }
+    } catch (e) {}
+  }
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify({ g: g, undo: undo })); } catch (e) {}
+  }
+  function blankRow(){ return { num: '', name: '', pos: '' }; }
+  function defaultDraft(){
+    var d = { N: 7, teams: [], rules: { mercy: 'none', ghost: false } };
+    [0, 1].forEach(function(){
+      var rows = []; for (var i = 0; i < 9; i++) rows.push(blankRow());
+      d.teams.push({ name: '', rows: rows, pit: { num: '', name: '' } });
+    });
+    return d;
+  }
+  function loadDraft(){
+    try {
+      var s = localStorage.getItem(DKEY);
+      if (s) {
+        var d = JSON.parse(s);
+        if (d && d.teams && d.teams.length === 2 && d.teams[0].rows && d.teams[1].rows) {
+          d.teams.forEach(function(t){ if (t.name === 'Visiteurs' || t.name === 'Locaux') t.name = ''; });
+          if (!d.rules) d.rules = { mercy: 'none', ghost: false };
+          return d;
+        }
+      }
+    } catch (e) {}
+    return defaultDraft();
+  }
+  function saveDraft(){ try { localStorage.setItem(DKEY, JSON.stringify(draft)); } catch (e) {} }
+
+  /* ---------- Équipes et joueurs enregistrés ---------- */
+  function tkey(n){ return String(n || '').trim().toLowerCase(); }
+  function loadRoster(){
+    try {
+      var s = localStorage.getItem(RKEY);
+      if (s) { var o = JSON.parse(s); if (o && o.teams && typeof o.teams === 'object') roster = o; }
+    } catch (e) {}
+  }
+  function saveRoster(){ try { localStorage.setItem(RKEY, JSON.stringify(roster)); } catch (e) {} }
+  function rosterTeam(name){ var k = tkey(name); return k ? (roster.teams[k] || null) : null; }
+  function rosterAdd(name, pl){
+    var k = tkey(name), pn = String(pl.name || '').trim();
+    if (!k || !pn) return;
+    var tm = roster.teams[k];
+    if (!tm) tm = roster.teams[k] = { name: String(name).trim(), players: [], lineup: [], pit: { num: '', name: '' } };
+    var low = pn.toLowerCase(), found = null, num = String(pl.num || '').trim();
+    tm.players.forEach(function(x){ if (x.name.toLowerCase() === low) found = x; });
+    if (found) { if (num) found.num = num; if (pl.pos) found.pos = pl.pos; }
+    else tm.players.push({ num: num, name: pn, pos: pl.pos || '' });
+  }
+  function rememberTeams(teams){
+    teams.forEach(function(d){
+      var name = String(d.name || '').trim();
+      if (!name) return;
+      var rows = d.rows.map(function(r){ return { num: String(r.num || '').trim(), name: String(r.name || '').trim(), pos: r.pos || '' }; });
+      rows.forEach(function(r){ rosterAdd(name, r); });
+      var pit = { num: String((d.pit && d.pit.num) || '').trim(), name: String((d.pit && d.pit.name) || '').trim() };
+      if (pit.name) rosterAdd(name, { num: pit.num, name: pit.name, pos: 'L' });
+      var tm = rosterTeam(name);
+      if (tm) { tm.name = name; tm.lineup = rows; tm.pit = pit; }
+    });
+    saveRoster();
+  }
+  function inLineup(t, name){
+    var low = name.toLowerCase(), d = draft.teams[t];
+    return d.rows.some(function(r){ return r.name.trim().toLowerCase() === low; }) || d.pit.name.trim().toLowerCase() === low;
+  }
+  function updHead(t){
+    var n = (draft.teams[t].name || '').trim();
+    $('th' + t).textContent = n || (t ? 'Équipe locale' : 'Équipe visiteuse');
+  }
+  function setDl(t, html){ if (dlCache[t] !== html) { dlCache[t] = html; $('dl' + t).innerHTML = html; } }
+  function renderSaved(){
+    var keys = Object.keys(roster.teams).sort(function(a, b){ return roster.teams[a].name.localeCompare(roster.teams[b].name, 'fr'); });
+    var h = '<option value="">' + (keys.length ? 'Choisir une équipe…' : 'Aucune équipe enregistrée') + '</option>' +
+      keys.map(function(k){ var x = roster.teams[k]; return '<option value="' + esc(k) + '">' + esc(x.name) + ' (' + x.players.length + ' joueurs)</option>'; }).join('');
+    for (var t = 0; t < 2; t++) $('saved' + t).innerHTML = h;
+  }
+  function renderBench(t){
+    var name = (draft.teams[t].name || '').trim(), tm = rosterTeam(name), box = $('bench' + t);
+    if (!name) { box.innerHTML = '<p class="hint">Saisissez le nom de l\'équipe pour retrouver ses joueurs enregistrés.</p>'; setDl(t, ''); return; }
+    if (!tm) { box.innerHTML = '<p class="hint">Cette équipe et ses joueurs seront enregistrés au démarrage de la partie.</p>'; setDl(t, ''); return; }
+    setDl(t, tm.players.map(function(p){ return '<option value="' + esc(p.name) + '"></option>'; }).join(''));
+    var h = '';
+    tm.players.forEach(function(p, k){
+      if (inLineup(t, p.name)) return;
+      h += '<span class="pchip"><button type="button" data-bench="add" data-t="' + t + '" data-k="' + k + '" aria-label="Ajouter ' + esc(p.name) + ' au line-up">' + esc(p.name) +
+        '<span class="m">' + esc((p.num ? '#' + p.num : '') + (p.num && p.pos ? ' · ' : '') + p.pos) + '</span></button>' +
+        '<button type="button" data-bench="rm" data-t="' + t + '" data-k="' + k + '" aria-label="Retirer ' + esc(p.name) + ' de l\'effectif enregistré">×</button></span>';
+    });
+    h = h ? '<span class="blabel">Effectif enregistré</span><p class="hint">Touchez un joueur pour l\'ajouter au line-up. Le × le retire de la mémoire.</p>' + h
+          : '<p class="hint">Tous les joueurs enregistrés de cette équipe sont dans le line-up.</p>';
+    var forget = ui.forget === t
+      ? '<button type="button" class="ghost" data-bench="forgetOk" data-t="' + t + '">Confirmer : supprimer ' + esc(tm.name) + '</button>'
+      : '<button type="button" class="ghost" data-bench="forget" data-t="' + t + '">Oublier cette équipe</button>';
+    box.innerHTML = h + '<div style="flex-basis:100%">' + forget + '</div>';
+  }
+  function benchAdd(t, k){
+    var tm = rosterTeam(draft.teams[t].name), p = tm && tm.players[k];
+    if (!p) return false;
+    var rows = draft.teams[t].rows, row = null, i;
+    for (i = 0; i < rows.length; i++) if (!rows[i].name.trim()) { row = rows[i]; break; }
+    if (!row) {
+      if (rows.length >= 15) { toast('Line-up complet (15 frappeurs)'); return false; }
+      row = blankRow(); rows.push(row);
+    }
+    row.name = p.name; row.num = p.num; row.pos = p.pos;
+    saveDraft(); renderSetup(); return true;
+  }
+  function benchRemove(t, k){
+    var tm = rosterTeam(draft.teams[t].name);
+    if (!tm || !tm.players[k]) return;
+    var nm = tm.players[k].name;
+    tm.players.splice(k, 1); saveRoster(); renderSaved(); renderBench(t);
+    toast(nm + ' retiré de l\'effectif');
+  }
+  function forgetTeam(t){
+    var k = tkey(draft.teams[t].name);
+    if (!roster.teams[k]) return;
+    delete roster.teams[k]; ui.forget = null; saveRoster(); renderSaved(); renderBench(0); renderBench(1);
+    toast('Équipe supprimée de la mémoire');
+  }
+  function loadTeam(t, key){
+    var s = roster.teams[key];
+    if (!s) return false;
+    var d = draft.teams[t];
+    d.name = s.name;
+    d.rows = (s.lineup || []).map(function(r){ return { num: r.num || '', name: r.name || '', pos: r.pos || '' }; });
+    while (d.rows.length < 9) d.rows.push(blankRow());
+    d.pit = { num: (s.pit && s.pit.num) || '', name: (s.pit && s.pit.name) || '' };
+    ui.forget = null; saveDraft(); renderSetup(); return true;
+  }
+  function autofill(t, el){
+    var tm = rosterTeam(draft.teams[t].name), f = el.getAttribute('data-f'), nm = el.value.trim().toLowerCase(), p = null;
+    if (!tm || !nm) return;
+    tm.players.forEach(function(x){ if (x.name.toLowerCase() === nm) p = x; });
+    if (!p) return;
+    if (f === 'name') {
+      var i = +el.getAttribute('data-i'), row = draft.teams[t].rows[i], pre = 'l' + t + '-' + i;
+      if (!row) return;
+      if (!row.num && p.num) { row.num = p.num; $(pre + '-n').value = p.num; }
+      if (!row.pos && p.pos) { row.pos = p.pos; $(pre + '-p').value = p.pos; }
+    } else if (f === 'pname') {
+      var pit = draft.teams[t].pit;
+      if (!pit.num && p.num) { pit.num = p.num; $('pnum' + t).value = p.num; }
+    }
+    saveDraft();
+  }
+  function fillFrom(e){
+    var el = e.target, f = el && el.getAttribute ? el.getAttribute('data-f') : null;
+    if (f === 'name' || f === 'pname') autofill(+el.getAttribute('data-t'), el);
+  }
+
+  /* ---------- Joueurs et partie ---------- */
+  function newPlayer(t, name, num, pos, slot, bats){
+    var p = { id: g.pl.length, t: t, name: name, num: num || '', pos: pos || '', slot: slot, bats: !!bats, gone: false,
+      b: { PA:0, AB:0, H:0, D:0, T:0, HR:0, BB:0, K:0, HBP:0, SAC:0, R:0, RBI:0, SB:0, CS:0 },
+      p: { O:0, BF:0, H:0, R:0, BB:0, K:0, HBP:0 } };
+    g.pl.push(p); return p;
+  }
+  function newGame(cfg){
+    g = { N: cfg.N, inning: 1, half: 0, outs: 0, balls: 0, strikes: 0, bases: [null,null,null],
+      runs: [[0],[null]], E: [0,0], LOB: [0,0], over: false, skipBottom: false, log: [], last: null, pl: [], teams: [],
+      t0: Date.now(), tEnd: null, pas: [], rules: cfg.rules || { mercy: [], ghost: false } };
+    cfg.teams.forEach(function(c, t){
+      var tm = { name: c.name, order: [], spot: 0, pitcher: null };
+      g.teams.push(tm);
+      c.rows.forEach(function(r, i){
+        var p = newPlayer(t, r.name || ('Frappeur ' + (i + 1)), r.num, r.pos, i, true);
+        tm.order.push(p.id);
+        if (r.pos === 'L' && tm.pitcher == null) tm.pitcher = p.id;
+      });
+      if (tm.pitcher == null) tm.pitcher = newPlayer(t, c.pit.name || 'Lanceur', c.pit.num, 'L', -1, false).id;
+    });
+    undo = []; ui = { base: null, sub: false };
+  }
+  function who(p){ return (p.num ? '#' + p.num + ' ' : '') + p.name; }
+  function total(t){ return g.runs[t].reduce(function(a, v){ return a + (v || 0); }, 0); }
+  function hitsOf(t){ return g.pl.reduce(function(a, p){ return a + (p.t === t ? p.b.H : 0); }, 0); }
+  function ord(n){ return n === 1 ? '1re' : n + 'e'; }
+  function curB(){ var tm = g.teams[g.half]; return g.pl[tm.order[tm.spot]]; }
+  function defP(){ return g.pl[g.teams[1 - g.half].pitcher]; }
+  function advSpot(){ var tm = g.teams[g.half]; tm.spot = (tm.spot + 1) % tm.order.length; }
+  function resetCount(){ g.balls = 0; g.strikes = 0; }
+  function note(text, r){
+    g.log.push({ i: g.inning, h: g.half, t: text + (r ? ' · ' + r + ' point' + (r > 1 ? 's' : '') : '') });
+  }
+  function snap(){ undo.push(JSON.stringify(g)); if (undo.length > 40) undo.shift(); }
+
+  /* ---------- Règles ---------- */
+  function runnerScores(rn){
+    g.pl[rn.p].b.R++;
+    if (rn.pa != null && g.pas && g.pas[rn.pa]) g.pas[rn.pa].sc = 1;
+    if (rn.rp != null) g.pl[rn.rp].p.R++;
+  }
+  function moveRunners(n){
+    var r = 0, nb = [null,null,null];
+    for (var i = 0; i < 3; i++) {
+      var rn = g.bases[i];
+      if (rn) { var p = i + 1 + n; if (p >= 4) { runnerScores(rn); r++; } else nb[p - 1] = rn; }
+    }
+    g.bases = nb; return r;
+  }
+  function forcedPlace(rn){
+    var bs = g.bases, r = 0;
+    if (!bs[0]) { bs[0] = rn; }
+    else if (!bs[1]) { bs[1] = bs[0]; bs[0] = rn; }
+    else if (!bs[2]) { bs[2] = bs[1]; bs[1] = bs[0]; bs[0] = rn; }
+    else { runnerScores(bs[2]); r = 1; bs[2] = bs[1]; bs[1] = bs[0]; bs[0] = rn; }
+    return r;
+  }
+  function fielders(bat){
+    var bs = g.bases;
+    if (!bs[0]) { bs[bs[2] ? 2 : 1] = null; bs[0] = bat; return; }
+    var k = 1; if (bs[1]) { k = 2; if (bs[2]) k = 3; }
+    for (var idx = k - 1; idx >= 1; idx--) bs[idx] = bs[idx - 1];
+    bs[0] = bat;
+  }
+  function takeOuts(k){
+    k = Math.min(k, 3 - g.outs);
+    g.outs += k; defP().p.O += k;
+  }
+  function finish(){ if (g.over) return; g.over = true; g.tEnd = Date.now(); note('Fin de la partie'); }
+  function mercyHit(){
+    var R = (g.rules && g.rules.mercy) || [], d = Math.abs(total(0) - total(1));
+    return R.some(function(r){ return g.inning >= r[1] && d >= r[0]; });
+  }
+  function mercyEnd(){ note('Fin par écart de points'); finish(); }
+  function score(n){
+    if (!n) return;
+    g.runs[g.half][g.inning - 1] = (g.runs[g.half][g.inning - 1] || 0) + n;
+    if (g.half === 1 && g.inning >= g.N && total(1) > total(0)) finish();
+    else if (g.half === 1 && total(1) > total(0) && mercyHit()) mercyEnd();
+  }
+  function placeGhost(){
+    if (!(g.rules && g.rules.ghost) || g.inning <= g.N || g.over) return;
+    var tm = g.teams[g.half], n = tm.order.length, pid = tm.order[(tm.spot + n - 1) % n];
+    g.bases[1] = { p: pid, rp: defP().id, pa: null };
+    note('Coureur en 2e base : ' + who(g.pl[pid]));
+  }
+  function endHalf(){
+    g.LOB[g.half] += g.bases.filter(Boolean).length;
+    g.bases = [null,null,null]; g.outs = 0; resetCount(); g.last = null;
+    if (g.half === 0) {
+      if (g.inning >= g.N && total(1) > total(0)) { g.skipBottom = true; finish(); return; }
+      if (total(1) > total(0) && mercyHit()) { g.skipBottom = true; mercyEnd(); return; }
+      g.half = 1; g.runs[1][g.inning - 1] = 0;
+    } else {
+      if (g.inning >= g.N && total(0) !== total(1)) { finish(); return; }
+      if (mercyHit()) { mercyEnd(); return; }
+      g.inning++; g.half = 0;
+      g.runs[0][g.inning - 1] = 0; g.runs[1][g.inning - 1] = null;
+    }
+    placeGhost();
+  }
+  function pa(kind, label){
+    var b = curB(), pc = defP(), r = 0;
+    resetCount(); g.last = b.id;
+    b.b.PA++; pc.p.BF++;
+    var rbi0 = b.b.RBI;
+    if (!g.pas) g.pas = [];
+    var rec = { t: g.half, pid: b.id, inn: g.inning, res: CODE[kind] || '?', rbi: 0, sc: 0 };
+    g.pas.push(rec);
+    var bat = { p: b.id, rp: pc.id, pa: g.pas.length - 1 };
+    if (kind === 'single' || kind === 'double' || kind === 'triple' || kind === 'homer') {
+      var n = { single: 1, double: 2, triple: 3, homer: 4 }[kind];
+      b.b.AB++; b.b.H++; pc.p.H++;
+      if (n === 2) b.b.D++; if (n === 3) b.b.T++; if (n === 4) b.b.HR++;
+      r = moveRunners(n);
+      if (n === 4) { runnerScores(bat); r++; } else g.bases[n - 1] = bat;
+      b.b.RBI += r;
+    } else if (kind === 'bb') { b.b.BB++; pc.p.BB++; r = forcedPlace(bat); b.b.RBI += r; }
+    else if (kind === 'hbp') { b.b.HBP++; pc.p.HBP++; r = forcedPlace(bat); b.b.RBI += r; }
+    else if (kind === 'error') { b.b.AB++; r = moveRunners(1); g.bases[0] = bat; g.E[1 - g.half]++; }
+    else if (kind === 'out') { b.b.AB++; takeOuts(1); }
+    else if (kind === 'k') { b.b.AB++; b.b.K++; pc.p.K++; takeOuts(1); }
+    else if (kind === 'sac') { b.b.SAC++; takeOuts(1); if (g.outs < 3) { r = moveRunners(1); b.b.RBI += r; } }
+    else if (kind === 'dp') { b.b.AB++; g.bases[g.bases[0] ? 0 : (g.bases[2] ? 2 : 1)] = null; takeOuts(2); }
+    else if (kind === 'fc') { b.b.AB++; fielders(bat); takeOuts(1); }
+    note(who(b) + ' : ' + label, r);
+    rec.rbi = b.b.RBI - rbi0;
+    advSpot();
+    score(r);
+    if (!g.over && g.outs >= 3) endHalf();
+  }
+
+  var LABEL = { single: 'Simple', double: 'Double', triple: 'Triple', homer: 'Coup de circuit', walk: 'But sur balles',
+    hbp: 'Frappé par le lanceur', error: 'Erreur de la défense', out: 'Retrait', k: 'Retrait sur prises',
+    sac: 'Sacrifice', dp: 'Double jeu', fc: 'Choix du défenseur' };
+  var KIND = { single: 'single', double: 'double', triple: 'triple', homer: 'homer', walk: 'bb', hbp: 'hbp',
+    error: 'error', out: 'out', k: 'k', sac: 'sac', dp: 'dp', fc: 'fc' };
+
+  var CODE = { single: 'S', double: 'D', triple: 'T', homer: 'CC', bb: 'BB', hbp: 'FL', error: 'E', out: 'O', k: 'K', sac: 'SAC', dp: 'DJ', fc: 'CD' };
+  function fcApply(oi){
+    var b = curB(), pc = defP(), out = g.bases[oi], r = 0, i, dest, rn;
+    if (!out) return;
+    resetCount(); g.last = b.id;
+    b.b.PA++; pc.p.BF++; b.b.AB++;
+    if (!g.pas) g.pas = [];
+    var outP = g.pl[out.p];
+    g.pas.push({ t: g.half, pid: b.id, inn: g.inning, res: 'CD', rbi: 0, sc: 0, out: out.p });
+    var rec = g.pas[g.pas.length - 1];
+    var bat = { p: b.id, rp: pc.id, pa: g.pas.length - 1 };
+    var third = g.outs + 1 >= 3;
+    var f = [true, !!g.bases[0], !!(g.bases[0] && g.bases[1])];
+    var nb = [bat, null, null];
+    for (i = 0; i < 3; i++) {
+      rn = g.bases[i];
+      if (!rn || i === oi) continue;
+      if (f[i]) {
+        dest = i + 1;
+        if (dest >= 3) { if (!third) { runnerScores(rn); r++; } else if (!nb[2]) nb[2] = rn; }
+        else nb[dest] = rn;
+      } else nb[i] = rn;
+    }
+    g.bases = nb;
+    takeOuts(1);
+    b.b.RBI += r; rec.rbi = r;
+    note(who(b) + ' : Choix du défenseur, ' + who(outP) + ' éliminé (' + ['1re', '2e', '3e'][oi] + ' base)', r);
+    advSpot();
+    score(r);
+    if (!g.over && g.outs >= 3) endHalf();
+  }
+  function fcChoose(i){
+    if (!g || g.over || !g.bases[i]) return;
+    snap(); ui.fc = false; fcApply(i); commit();
+  }
+  function renderFc(){
+    var box = $('fcBox');
+    if (!ui.fc || !g || g.over) { ui.fc = false; box.hidden = true; box.innerHTML = ''; return; }
+    var nm = ['1re base', '2e base', '3e base'];
+    var h = '<div class="rp-head"><strong>Choix du défenseur : qui est éliminé ?</strong><button type="button" class="ghost" data-fcx="1">Annuler</button></div><div class="btns">';
+    for (var i = 2; i >= 0; i--) {
+      if (g.bases[i]) h += '<button type="button" class="btn out" data-fc="' + i + '">' + esc(who(g.pl[g.bases[i].p])) + '<span class="s">' + nm[i] + '</span></button>';
+    }
+    box.innerHTML = h + '</div>'; box.hidden = false;
+  }
+  function act(a){
+    if (!g) return;
+    if (a === 'undo') {
+      if (undo.length) { g = JSON.parse(undo.pop()); ui.base = null; ui.fc = false; commit(); }
+      return;
+    }
+    if (g.over) return;
+    if (a === 'foul' && g.strikes >= 2) return;
+    if (a === 'runMinus' && !(g.runs[g.half][g.inning - 1] > 0)) { toast('Aucun point à retirer dans cette demi-manche'); return; }
+    if ((a === 'dp' || a === 'fc') && !g.bases.some(Boolean)) { toast('Il faut au moins un coureur sur base'); return; }
+    if (a === 'fc') {
+      var occ = [0, 1, 2].filter(function(i){ return g.bases[i]; });
+      ui.base = null;
+      if (occ.length === 1) { snap(); fcApply(occ[0]); commit(); }
+      else { ui.fc = true; render(); }
+      return;
+    }
+    snap(); ui.base = null; ui.fc = false;
+    switch (a) {
+      case 'ball': g.balls++; if (g.balls >= 4) pa('bb', 'But sur balles (4 balles)'); break;
+      case 'strike': g.strikes++; if (g.strikes >= 3) pa('k', 'Retrait sur 3 prises'); break;
+      case 'foul': g.strikes++; break;
+      case 'runPlus': note('Point ajouté (équipe)'); score(1); break;
+      case 'runMinus': g.runs[g.half][g.inning - 1]--; note('Point retiré (équipe)'); break;
+      case 'endhalf': note('Changement de côté'); endHalf(); break;
+      case 'end': note('Partie arrêtée'); g.over = true; g.tEnd = Date.now(); break;
+      default: if (KIND[a]) pa(KIND[a], LABEL[a]);
+    }
+    commit();
+  }
+
+  function runnerAct(i, a){
+    var rn = g.bases[i];
+    if (!rn || g.over) return;
+    var p = g.pl[rn.p];
+    if (a === 'adv' || a === 'steal') {
+      var to = i + 1;
+      if (to < 3 && g.bases[to]) { toast('La base suivante est occupée'); return; }
+      snap(); g.bases[i] = null;
+      if (a === 'steal') p.b.SB++;
+      if (to >= 3) { runnerScores(rn); note(who(p) + ' : ' + (a === 'steal' ? 'Base volée et point' : 'Marque')); score(1); }
+      else { g.bases[to] = rn; note(who(p) + ' : ' + (a === 'steal' ? 'Base volée' : 'Avance d\'une base')); }
+    } else if (a === 'score' || a === 'scoreRbi') {
+      snap(); g.bases[i] = null; runnerScores(rn);
+      if (a === 'scoreRbi' && g.last != null && g.pl[g.last].t === g.half) g.pl[g.last].b.RBI++;
+      note(who(p) + ' : Marque', 1); score(1);
+    } else if (a === 'cs' || a === 'out') {
+      snap(); g.bases[i] = null;
+      if (a === 'cs') p.b.CS++;
+      takeOuts(1);
+      note(who(p) + ' : ' + (a === 'cs' ? 'Surpris en vol' : 'Retiré sur les bases'));
+      if (g.outs >= 3) endHalf();
+    } else if (a === 'remove') {
+      snap(); g.bases[i] = null; note(who(p) + ' : retiré des bases (correction)');
+    } else return;
+    ui.base = null; commit();
+  }
+  function placeRunner(i, id){
+    if (!g || g.over || g.bases[i] || isNaN(id) || !g.pl[id]) return;
+    snap();
+    g.bases[i] = { p: id, rp: defP().id };
+    note(who(g.pl[id]) + ' : placé sur la ' + (i + 1 === 1 ? '1re' : (i + 1) + 'e') + ' base');
+    ui.base = null; commit();
+  }
+  function substitute(t, slot, name, num, pos){
+    var tm = g.teams[t];
+    snap();
+    var np = newPlayer(t, name, num, slot < 0 ? 'L' : pos, slot < 0 ? -1 : slot, slot >= 0);
+    if (rosterTeam(tm.name)) { rosterAdd(tm.name, { num: num, name: name, pos: slot < 0 ? 'L' : pos }); saveRoster(); }
+    var txt = 'Remplacement (' + tm.name + ') : ' + who(np);
+    if (slot >= 0) { var old = g.pl[tm.order[slot]]; old.gone = true; tm.order[slot] = np.id; txt += ' pour ' + who(old); }
+    if (np.pos === 'L') { tm.pitcher = np.id; txt += ' · lanceur'; }
+    note(txt);
+    ui.sub = false; commit();
+  }
+  function commit(){ save(); archive(); render(); }
+
+  /* ---------- Statistiques ---------- */
+  var BCOLS = [['PA','PA','Présences au bâton'],['AB','AB','Passages officiels au bâton'],['R','P','Points marqués'],['H','CS','Coups sûrs'],
+    ['D','2B','Doubles'],['T','3B','Triples'],['HR','CC','Coups de circuit'],['RBI','PP','Points produits'],['BB','BB','Buts sur balles'],
+    ['K','K','Retraits sur prises'],['HBP','FL','Frappé par le lanceur'],['SAC','SAC','Sacrifices'],['SB','BV','Bases volées'],['CS','SV','Surpris en vol']];
+  var PCOLS = [['IP','MJ','Manches lancées'],['BF','FA','Frappeurs affrontés'],['H','CS','Coups sûrs accordés'],['R','P','Points accordés'],
+    ['BB','BB','Buts sur balles accordés'],['K','K','Retraits sur prises'],['HBP','FL','Frappeurs touchés']];
+  function fmt3(x){ if (x == null) return '–'; var s = x.toFixed(3); return x < 1 ? s.slice(1) : s; }
+  function ipf(o){ return Math.floor(o / 3) + '.' + (o % 3); }
+  function rates(b){
+    var tb = b.H + b.D + 2 * b.T + 3 * b.HR, d = b.AB + b.BB + b.HBP + b.SAC;
+    var avg = b.AB ? b.H / b.AB : null, obp = d ? (b.H + b.BB + b.HBP) / d : null, slg = b.AB ? tb / b.AB : null;
+    return { avg: avg, obp: obp, slg: slg, ops: (obp != null && slg != null) ? obp + slg : null };
+  }
+  function rateArr(b){ var r = rates(b); return [fmt3(r.avg), fmt3(r.obp), fmt3(r.slg), fmt3(r.ops)]; }
+  function batters(t){
+    return g.pl.filter(function(p){ return p.t === t && (p.bats || p.b.PA > 0); })
+      .sort(function(a, b){ return (a.slot - b.slot) || (a.id - b.id); });
+  }
+  function pitchers(t){
+    return g.pl.filter(function(p){ return p.t === t && (p.p.BF > 0 || p.p.O > 0 || p.id === g.teams[t].pitcher); });
+  }
+  function sumB(rows){
+    var s = {}; BCOLS.forEach(function(c){ s[c[0]] = rows.reduce(function(a, p){ return a + p.b[c[0]]; }, 0); }); return s;
+  }
+  function sumP(rows){
+    var s = {}; ['O','BF','H','R','BB','K','HBP'].forEach(function(k){ s[k] = rows.reduce(function(a, p){ return a + p.p[k]; }, 0); }); return s;
+  }
+  function pcell(p, slotLabel){
+    return '<td class="pl"><span class="pn">' + esc(slotLabel + p.name) + '</span><span class="pm">' +
+      esc((p.num ? '#' + p.num : '') + (p.num && p.pos ? ' · ' : '') + p.pos + (p.gone ? ' · remplacé' : '')) + '</span></td>';
+  }
+  function batRow(b, first){
+    var r = rates(b);
+    return '<tr>' + first + BCOLS.map(function(c){ return '<td>' + b[c[0]] + '</td>'; }).join('') +
+      '<td class="key">' + fmt3(r.avg) + '</td><td>' + fmt3(r.obp) + '</td><td>' + fmt3(r.slg) + '</td><td>' + fmt3(r.ops) + '</td></tr>';
+  }
+  function batTable(t){
+    var rows = batters(t), tot = sumB(rows);
+    var h = '<div class="scroll"><table class="st"><thead><tr><th class="pl">Joueur</th>' +
+      BCOLS.map(function(c){ return '<th title="' + c[2] + '">' + c[1] + '</th>'; }).join('') +
+      '<th title="Moyenne au bâton">MB</th><th title="Moyenne de présence sur base">MPB</th><th title="Moyenne de puissance">MPU</th><th title="MPB + MPU">OPS</th></tr></thead><tbody>';
+    rows.forEach(function(p){ h += batRow(p.b, pcell(p, (p.slot + 1) + '. ')); });
+    h += '</tbody><tfoot>' + batRow(tot, '<td class="pl"><span class="pn">Total équipe</span></td>') + '</tfoot></table></div>';
+    return h;
+  }
+  function pitRow(s, first){
+    return '<tr>' + first + '<td>' + ipf(s.O) + '</td><td>' + s.BF + '</td><td>' + s.H + '</td><td>' + s.R + '</td><td>' + s.BB + '</td><td>' + s.K + '</td><td>' + s.HBP + '</td></tr>';
+  }
+  function pitTable(t){
+    var rows = pitchers(t), tot = sumP(rows);
+    var h = '<div class="scroll"><table class="st"><thead><tr><th class="pl">Lanceur</th>' +
+      PCOLS.map(function(c){ return '<th title="' + c[2] + '">' + c[1] + '</th>'; }).join('') + '</tr></thead><tbody>';
+    rows.forEach(function(p){ h += pitRow(p.p, pcell(p, '')); });
+    h += '</tbody><tfoot>' + pitRow(tot, '<td class="pl"><span class="pn">Total équipe</span></td>') + '</tfoot></table></div>';
+    return h;
+  }
+  function resultText(){
+    var a = total(0), b = total(1);
+    if (!g.over) return g.teams[0].name + ' ' + a + ' – ' + b + ' ' + g.teams[1].name + ' (partie en cours)';
+    return a === b ? 'Égalité ' + a + '–' + b : 'Victoire de ' + g.teams[a > b ? 0 : 1].name + ' · ' + Math.max(a, b) + '–' + Math.min(a, b);
+  }
+  function inningHits(t, i){
+    return (g.pas || []).filter(function(x){ return x.t === t && x.inn === i && /^(S|D|T|CC)$/.test(x.res); }).length;
+  }
+  function inningCard(){
+    var cols = Math.max(g.N, g.inning), i, t, hasPas = !!(g.pas && g.pas.length);
+    var h = '<div class="card sect"><h3>Par manche</h3><div class="scroll"><table class="st"><thead><tr><th class="pl">Équipe</th>';
+    for (i = 1; i <= cols; i++) h += '<th>' + i + '</th>';
+    h += '<th>Total</th></tr></thead><tbody>';
+    for (t = 0; t < 2; t++) {
+      var th = 0, row = '<tr><td class="pl"><span class="pn">' + esc(g.teams[t].name) + '</span><span class="pm">Points</span></td>', row2 = '<tr><td class="pl"><span class="pm">Coups sûrs</span></td>';
+      for (i = 1; i <= cols; i++) {
+        var v = g.runs[t][i - 1], hh = inningHits(t, i); th += hh;
+        row += '<td>' + (v != null ? v : '–') + '</td>';
+        row2 += '<td>' + (v != null ? hh : '–') + '</td>';
+      }
+      h += row + '<td class="key">' + total(t) + '</td></tr>' + (hasPas ? row2 + '<td class="key">' + th + '</td></tr>' : '');
+    }
+    return h + '</tbody></table></div></div>';
+  }
+  function statsHTML(){
+    var h = '<div class="board"><div class="board-head"><div class="bh-l"><span class="half">' + esc(resultText()) + '</span><span class="bat">Durée du match : ' + clockText() + '</span></div></div>' +
+      '<div class="scroll"><table class="line">' + lineHTML() + '</table></div>' +
+      '<p class="legend">P points · CS coups sûrs · E erreurs</p></div>';
+    h += awardsCard() + inningCard();
+    for (var t = 0; t < 2; t++) {
+      h += '<div class="card sect"><h3>' + esc(g.teams[t].name) + '</h3>' +
+        '<h4>Frappeurs</h4>' + batTable(t) +
+        '<p class="minor">Laissés sur base : ' + g.LOB[t] + ' · Erreurs de la défense : ' + g.E[1 - t] + '</p>' +
+        '<h4>Lanceurs</h4>' + pitTable(t) + '</div>';
+    }
+    h += '<p class="legend2"><strong>Frappeurs.</strong> PA présences au bâton · AB passages officiels · P points marqués · CS coups sûrs · 2B doubles · 3B triples · CC circuits · PP points produits · BB buts sur balles · K retraits sur prises · FL frappé par le lanceur · SAC sacrifices · BV bases volées · SV surpris en vol · MB moyenne au bâton (CS/AB) · MPB moyenne de présence sur base · MPU moyenne de puissance · OPS MPB + MPU.<br>' +
+      '<strong>Lanceurs.</strong> MJ manches lancées (3.1 = 3 manches et 1 retrait) · FA frappeurs affrontés · CS, P, BB, K, FL accordés ou réalisés. Les points sont portés au lanceur qui a laissé le coureur arriver sur base. Les points mérités ne sont pas suivis.<br>' +
+      '<strong>MVP.</strong> Total de bases + points marqués + points produits + 0,5 par but sur balles, frappé ou base volée + 0,25 par sacrifice − 0,5 par surpris en vol − 0,25 par retrait sur prises. Pour un lanceur : + 0,25 par retrait obtenu + 0,5 par retrait sur prises − 0,5 par point accordé. Le MVP est choisi dans l\'équipe gagnante. <strong>Meilleur frappeur.</strong> Meilleur OPS parmi les joueurs ayant au moins 2 présences au bâton.</p>';
+    return h;
+  }
+  function statsText(){
+    var o = [resultText(), 'Durée du match : ' + clockText()].concat(awardsText());
+    for (var t = 0; t < 2; t++) {
+      var rows = batters(t), hdr = ['Joueur', 'N°', 'Poste'].concat(BCOLS.map(function(c){ return c[1]; }), ['MB', 'MPB', 'MPU', 'OPS']);
+      o.push('', 'FRAPPEURS - ' + g.teams[t].name, hdr.join('\t'));
+      rows.forEach(function(p){
+        o.push([(p.slot + 1) + '. ' + p.name, p.num, p.pos].concat(BCOLS.map(function(c){ return p.b[c[0]]; }), rateArr(p.b)).join('\t'));
+      });
+      var tot = sumB(rows);
+      o.push(['Total équipe', '', ''].concat(BCOLS.map(function(c){ return tot[c[0]]; }), rateArr(tot)).join('\t'));
+      o.push('Laissés sur base : ' + g.LOB[t] + ' - Erreurs de la défense : ' + g.E[1 - t]);
+      o.push('', 'LANCEURS - ' + g.teams[t].name, ['Lanceur', 'N°'].concat(PCOLS.map(function(c){ return c[1]; })).join('\t'));
+      pitchers(t).forEach(function(p){
+        o.push([p.name, p.num, ipf(p.p.O), p.p.BF, p.p.H, p.p.R, p.p.BB, p.p.K, p.p.HBP].join('\t'));
+      });
+    }
+    return o.join('\n');
+  }
+
+  /* ---------- Feuille de scorage, MVP, meilleur frappeur ---------- */
+  function mvpScore(p){
+    var b = p.b, q = p.p, tb = b.H + b.D + 2 * b.T + 3 * b.HR;
+    return tb + b.R + b.RBI + 0.5 * (b.BB + b.HBP + b.SB) + 0.25 * b.SAC - 0.5 * b.CS - 0.25 * b.K + 0.25 * q.O + 0.5 * q.K - 0.5 * q.R;
+  }
+  function awards(){
+    var a = total(0), b = total(1), winT = a === b ? -1 : (a > b ? 0 : 1);
+    var pool = g.pl.filter(function(p){ return p.b.PA > 0 || p.p.BF > 0; });
+    var mvp = null, hit = null;
+    pool.filter(function(p){ return winT < 0 || p.t === winT; }).forEach(function(p){
+      var sc = mvpScore(p);
+      if (!mvp || sc > mvp.s) mvp = { p: p, s: sc };
+    });
+    var cand = pool.filter(function(p){ return p.b.PA >= 2; });
+    if (!cand.length) cand = pool.filter(function(p){ return p.b.PA >= 1; });
+    cand.forEach(function(p){
+      var r = rates(p.b), ops = r.ops == null ? -1 : r.ops, tb = p.b.H + p.b.D + 2 * p.b.T + 3 * p.b.HR;
+      if (!hit || ops > hit.ops || (ops === hit.ops && (p.b.H > hit.p.b.H || (p.b.H === hit.p.b.H && tb > hit.tb)))) hit = { p: p, ops: ops, tb: tb };
+    });
+    return { mvp: mvp, hit: hit };
+  }
+  function lineFor(p){
+    var b = p.b, q = p.p, o = [];
+    if (b.PA) o.push(b.H + ' pour ' + b.AB);
+    if (b.HR) o.push(b.HR + ' CC');
+    if (b.R) o.push(b.R + ' P');
+    if (b.RBI) o.push(b.RBI + ' PP');
+    if (b.SB) o.push(b.SB + ' BV');
+    if (q.O) o.push(ipf(q.O) + ' MJ');
+    if (q.K) o.push(q.K + ' K');
+    if (q.O && q.R) o.push(q.R + ' P accordés');
+    return o.join(' · ');
+  }
+  function hitLine(p){
+    var r = rates(p.b);
+    return 'MB ' + fmt3(r.avg) + ' · ' + p.b.H + ' pour ' + p.b.AB + ' · OPS ' + fmt3(r.ops);
+  }
+  function awardsHTML(){
+    var A = awards(), h = '';
+    if (A.mvp) h += '<div class="award"><span class="ak">MVP</span><span class="an">' + esc(who(A.mvp.p)) + '</span><span class="as">' + esc(g.teams[A.mvp.p.t].name) + ' · ' + esc(lineFor(A.mvp.p)) + '</span></div>';
+    if (A.hit) h += '<div class="award"><span class="ak">Meilleur frappeur</span><span class="an">' + esc(who(A.hit.p)) + '</span><span class="as">' + esc(g.teams[A.hit.p.t].name) + ' · ' + esc(hitLine(A.hit.p)) + '</span></div>';
+    return h;
+  }
+  function awardsCard(){
+    var h = awardsHTML();
+    if (!h) return '';
+    return '<div class="card sect"><h3>' + (g.over ? 'Distinctions du match' : 'Distinctions (provisoires)') + '</h3><div class="awards">' + h + '</div></div>';
+  }
+  function awardsText(){
+    var A = awards(), o = [];
+    if (A.mvp) o.push('MVP : ' + who(A.mvp.p) + ' (' + g.teams[A.mvp.p.t].name + ') - ' + lineFor(A.mvp.p));
+    if (A.hit) o.push('Meilleur frappeur : ' + who(A.hit.p) + ' (' + g.teams[A.hit.p.t].name + ') - ' + hitLine(A.hit.p));
+    return o;
+  }
+
+  /* ---------- Affichage ---------- */
+  function lineHTML(){
+    var cols = Math.max(g.N, g.inning), t, i, v, s;
+    var h = '<tr><th class="team"><span class="nm"></span></th>';
+    for (i = 1; i <= cols; i++) h += '<th class="' + (!g.over && i === g.inning ? 'curh' : '') + '">' + i + '</th>';
+    h += '<th class="sep" title="Points">P</th><th title="Coups sûrs">CS</th><th title="Erreurs">E</th></tr>';
+    for (t = 0; t < 2; t++) {
+      var curTeam = !g.over && g.half === t;
+      h += '<tr><td class="team"><span class="nm">' + (curTeam ? '▸ ' : '') + esc(g.teams[t].name) + '</span></td>';
+      for (i = 1; i <= cols; i++) {
+        v = g.runs[t][i - 1]; s = '';
+        if (v != null) s = v; else if (g.skipBottom && t === 1 && i === g.inning) s = 'X';
+        h += '<td class="' + (curTeam && i === g.inning ? 'cur' : '') + '">' + s + '</td>';
+      }
+      h += '<td class="sep tot">' + total(t) + '</td><td>' + hitsOf(t) + '</td><td>' + g.E[t] + '</td></tr>';
+    }
+    return h;
+  }
+  function dots(n, max, cls){
+    var s = '';
+    for (var i = 0; i < max; i++) s += '<span class="dot ' + cls + (i < n ? ' on' : '') + '"></span>';
+    return s;
+  }
+  function posOptions(sel, noEmpty, short){
+    return POS.filter(function(p){ return !(noEmpty && p[0] === ''); }).map(function(p){
+      return '<option value="' + p[0] + '"' + (p[0] === sel ? ' selected' : '') + '>' + esc(short && p[0] ? p[0] : p[1]) + '</option>';
+    }).join('');
+  }
+  function renderRunner(){
+    var box = $('runnerPanel');
+    if (ui.base == null || !g || g.over) { box.hidden = true; box.innerHTML = ''; return; }
+    var i = ui.base, rn = g.bases[i], nm = ['Première', 'Deuxième', 'Troisième'][i] + ' base';
+    function b(a, label, cls){ return '<button type="button" class="btn small' + (cls ? ' ' + cls : '') + '" data-ract="' + a + '">' + label + '</button>'; }
+    var h;
+    if (rn) {
+      h = '<div class="rp-head"><strong>' + esc(nm) + ' · ' + esc(who(g.pl[rn.p])) + '</strong><button type="button" class="ghost" data-rclose="1">Fermer</button></div>' +
+        '<div class="btns c2">' + b('adv', 'Avance d\'une base') + b('steal', 'Base volée') + b('score', 'Marque') + b('scoreRbi', 'Marque (point produit)') +
+        b('cs', 'Surpris en vol', 'out') + b('out', 'Retiré sur les bases', 'out') + b('remove', 'Retirer des bases (correction)', 'span2') + '</div>';
+    } else {
+      var tm = g.teams[g.half], used = {};
+      g.bases.forEach(function(x){ if (x) used[x.p] = true; });
+      var opts = tm.order.filter(function(id){ return !used[id]; });
+      var sel = (g.last != null && opts.indexOf(g.last) >= 0) ? g.last : opts[0];
+      h = '<div class="rp-head"><strong>' + esc(nm) + ' · libre</strong><button type="button" class="ghost" data-rclose="1">Fermer</button></div>' +
+        '<div class="panel-grid"><div class="field"><label for="rpSel">Placer un coureur</label><select id="rpSel">' +
+        opts.map(function(id){ return '<option value="' + id + '"' + (id === sel ? ' selected' : '') + '>' + esc(who(g.pl[id])) + '</option>'; }).join('') +
+        '</select></div><button type="button" class="btn small" data-ract="place">Placer sur la base</button></div>';
+    }
+    box.innerHTML = h; box.hidden = false;
+  }
+  function render(){
+    $('setup').hidden = view !== 'setup';
+    $('game').hidden = view !== 'game';
+    $('stats').hidden = view !== 'stats';
+    $('btnNew').hidden = view === 'setup' || view === 'teams' || view === 'hist';
+    $('btnStats').hidden = view !== 'game';
+    $('btnBack').hidden = view !== 'stats';
+    $('resume').hidden = !g;
+    $('teamsView').hidden = view !== 'teams';
+    $('btnTeams').hidden = view !== 'setup';
+    $('btnTeamsBack').hidden = view !== 'teams' && view !== 'hist';
+    $('btnHist').hidden = view !== 'setup';
+    $('histView').hidden = view !== 'hist';
+    var showQ = !!(g && !g.over && view === 'game');
+    $('qbar').hidden = !showQ;
+    document.body.classList.toggle('qb', showQ);
+    if (view === 'teams') renderTeams();
+    if (view === 'hist') renderHist();
+    if (view === 'stats') {
+      var G = sg();
+      if (G) $('statsBody').innerHTML = withG(G, statsHTML);
+      return;
+    }
+    if (!g) return;
+    if (view !== 'game') return;
+
+    $('line').innerHTML = lineHTML();
+    $('clock').textContent = clockText(); $('clockK').textContent = g.over ? 'Durée du match' : 'Chrono';
+    var tm = g.teams[g.half], i;
+    if (g.over) {
+      $('halfLabel').textContent = 'Partie terminée';
+      $('batLabel').textContent = '';
+      $('result').hidden = false; $('now').hidden = true;
+      $('resultTxt').textContent = resultText();
+      $('awards').innerHTML = awardsHTML();
+    } else {
+      $('halfLabel').textContent = (g.half ? '▼ Bas' : '▲ Haut') + ' de la ' + ord(g.inning) + ' manche' + (g.inning > g.N ? ' · supplémentaire' : '');
+      $('batLabel').textContent = 'Attaque : ' + tm.name;
+      $('result').hidden = true; $('now').hidden = false;
+      var b = curB(), nx = g.pl[tm.order[(tm.spot + 1) % tm.order.length]], pc = defP();
+      $('nowBat').textContent = who(b) + (b.pos ? ' · ' + b.pos : '');
+      $('nowStat').textContent = b.b.PA ? '(' + b.b.H + ' pour ' + b.b.AB + (b.b.BB ? ', ' + b.b.BB + ' BB' : '') + ')' : '(premier passage)';
+      $('nowNext').textContent = who(nx) + (nx.pos ? ' · ' + nx.pos : '');
+      $('nowPit').textContent = who(pc) + ' · ' + ipf(pc.p.O) + ' MJ, ' + pc.p.K + ' K, ' + pc.p.BB + ' BB';
+    }
+
+    $('count').textContent = g.balls + '–' + g.strikes;
+    $('dB').innerHTML = dots(g.balls, 3, 'ball');
+    $('dS').innerHTML = dots(g.strikes, 2, 'strike');
+    $('dO').innerHTML = dots(g.outs, 2, 'out');
+    $('dB').setAttribute('aria-label', 'Balles : ' + g.balls);
+    $('dS').setAttribute('aria-label', 'Prises : ' + g.strikes);
+    $('dO').setAttribute('aria-label', 'Retraits : ' + g.outs);
+
+    var names = ['Première', 'Deuxième', 'Troisième'];
+    for (i = 0; i < 3; i++) {
+      var el = $('base' + (i + 1)), rn = g.bases[i], p = rn ? g.pl[rn.p] : null;
+      el.classList.toggle('occ', !!rn);
+      el.classList.toggle('sel', ui.base === i);
+      el.setAttribute('aria-pressed', rn ? 'true' : 'false');
+      el.setAttribute('aria-label', names[i] + ' base : ' + (p ? who(p) : 'libre'));
+      $('rl' + (i + 1)).textContent = p ? (p.num || p.name.charAt(0).toUpperCase()) : '';
+    }
+    renderRunner();
+    renderFc();
+    $('subBox').hidden = !ui.sub || g.over;
+
+    var btns = document.querySelectorAll('[data-act]');
+    for (i = 0; i < btns.length; i++) {
+      var a = btns[i].getAttribute('data-act');
+      btns[i].disabled = a === 'undo' ? !undo.length : g.over;
+    }
+    $('btnSub').disabled = g.over;
+
+    var items = g.log.slice(-40).reverse().map(function(e){
+      return '<li><span class="tag" title="' + (e.h ? 'Bas' : 'Haut') + ' de la ' + ord(e.i) + '">' + (e.h ? '▼' : '▲') + e.i + '</span><span>' + esc(e.t) + '</span></li>';
+    }).join('');
+    $('log').innerHTML = items || '<li class="empty">Les jeux marquants apparaîtront ici.</li>';
+    wlSync();
+  }
+
+  function toast(msg){
+    var el = $('toast');
+    el.firstElementChild.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+  }
+  function summary(){
+    var cols = Math.max(g.N, g.inning);
+    var head = g.teams[0].name + ' ' + total(0) + ' – ' + total(1) + ' ' + g.teams[1].name +
+      (g.over ? ' (terminé)' : ' (' + (g.half ? 'bas' : 'haut') + ' de la ' + ord(g.inning) + ')');
+    function line(t){
+      var c = [];
+      for (var i = 1; i <= cols; i++) {
+        var v = g.runs[t][i - 1];
+        c.push(v != null ? v : (g.skipBottom && t === 1 && i === g.inning ? 'X' : '-'));
+      }
+      return g.teams[t].name + ' : ' + c.join(' ') + ' | P ' + total(t) + ' CS ' + hitsOf(t) + ' E ' + g.E[t];
+    }
+    return [head, 'Durée : ' + clockText(), line(0), line(1)].join('\n');
+  }
+  function copyText(text, areaId){
+    var fallback = function(){
+      var ta = $(areaId); ta.hidden = false; ta.value = text; ta.focus(); ta.select();
+      toast('Copie impossible : texte sélectionné');
+    };
+    try { navigator.clipboard.writeText(text).then(function(){ toast('Copié'); }, fallback); }
+    catch (e) { fallback(); }
+  }
+
+  /* ---------- Préparation ---------- */
+  function renderSetup(){
+    for (var t = 0; t < 2; t++) {
+      var d = draft.teams[t];
+      var h = '<div class="lu-head"><span>#</span><span>N°</span><span>Nom</span><span>Poste</span></div>';
+      d.rows.forEach(function(r, i){
+        var id = 'l' + t + '-' + i;
+        h += '<div class="lu-row"><span class="ord">' + (i + 1) + '</span>' +
+          '<input type="text" inputmode="numeric" maxlength="3" id="' + id + '-n" data-t="' + t + '" data-i="' + i + '" data-f="num" value="' + esc(r.num) + '" aria-label="Numéro du frappeur ' + (i + 1) + '" autocomplete="off">' +
+          '<input type="text" maxlength="28" id="' + id + '-m" data-t="' + t + '" data-i="' + i + '" data-f="name" list="dl' + t + '" value="' + esc(r.name) + '" placeholder="Frappeur ' + (i + 1) + '" aria-label="Nom du frappeur ' + (i + 1) + '" autocomplete="off">' +
+          '<select id="' + id + '-p" data-t="' + t + '" data-i="' + i + '" data-f="pos" aria-label="Poste du frappeur ' + (i + 1) + '">' + posOptions(r.pos, false, true) + '</select></div>';
+      });
+      $('lineup' + t).innerHTML = h;
+      $('tname' + t).value = d.name; $('pname' + t).value = d.pit.name; $('pnum' + t).value = d.pit.num;
+      updHead(t); renderBench(t);
+    }
+    renderSaved();
+    $('ruleMercy').value = (draft.rules && draft.rules.mercy) || 'none';
+    $('ruleGhost').checked = !!(draft.rules && draft.rules.ghost);
+    var rad = document.querySelector('input[name="inn"][value="' + draft.N + '"]');
+    if (rad) rad.checked = true;
+  }
+  function onDraft(e, quiet){
+    var el = e.target, f = el.getAttribute ? el.getAttribute('data-f') : null;
+    if (!f) return;
+    var t = +el.getAttribute('data-t'), i = +el.getAttribute('data-i');
+    if (f === 'tname') { draft.teams[t].name = el.value; ui.forget = null; updHead(t); }
+    else if (f === 'pname') draft.teams[t].pit.name = el.value;
+    else if (f === 'pnum') draft.teams[t].pit.num = el.value;
+    else if (draft.teams[t].rows[i]) draft.teams[t].rows[i][f] = el.value;
+    if (!quiet && (f === 'tname' || f === 'name' || f === 'pname')) renderBench(t);
+    saveDraft();
+  }
+  function parseMercy(v){
+    if (!v || v === 'none') return [];
+    return String(v).split(',').map(function(x){ var p = x.split('-'); return [+p[0], +p[1]]; });
+  }
+  function openSetup(){ view = 'setup'; ui.base = null; renderSetup(); render(); window.scrollTo(0, 0); }
+
+  /* ---------- Fichiers (enregistrement / partage) ---------- */
+  var DL = null;
+  try { if (window.claude && window.claude.use) window.claude.use('downloads').then(function(d){ DL = d; }, function(){}); } catch (e) {}
+  function saveFile(name, data, mime){
+    var blob = data instanceof Blob ? data : new Blob([data], { type: mime });
+    if (DL && DL.save) {
+      return DL.save({ filename: name, data: blob }).then(function(){ toast('Fichier enregistré'); },
+        function(e){ if (!e || e.code !== 'declined') toast('Enregistrement impossible ici'); });
+    }
+    try {
+      if (/^image\//.test(mime) && window.File && navigator.canShare && navigator.share) {
+        var f = new File([blob], name, { type: mime });
+        if (navigator.canShare({ files: [f] })) return navigator.share({ files: [f], title: name }).catch(function(){});
+      }
+    } catch (e) {}
+    try {
+      var url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
+      toast('Fichier enregistré');
+    } catch (e) { toast('Enregistrement impossible ici'); }
+    return Promise.resolve();
+  }
+  function stamp(ms){ var d = new Date(ms || Date.now()); function z(n){ return (n < 10 ? '0' : '') + n; } return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); }
+  function slug(x){ return String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+  /* ---------- Historique des matchs ---------- */
+  function loadHist(){
+    try { var s = localStorage.getItem(HKEY); if (s) { var a = JSON.parse(s); if (Array.isArray(a)) hist = a.filter(function(h){ return h && h.g && h.g.pl; }); } } catch (e) {}
+  }
+  function saveHist(){ try { localStorage.setItem(HKEY, JSON.stringify(hist)); } catch (e) {} }
+  function histIndex(id){ for (var i = 0; i < hist.length; i++) if (hist[i].id === id) return i; return -1; }
+  function archive(){
+    if (!g || g.t0 == null) return;
+    var i = histIndex(g.t0);
+    if (g.over) {
+      var e = { id: g.t0, date: g.t0, g: JSON.parse(JSON.stringify(g)) };
+      if (i >= 0) hist[i] = e; else hist.unshift(e);
+      hist.sort(function(a, b){ return b.date - a.date; });
+      if (hist.length > 60) hist.length = 60;
+      saveHist();
+    } else if (i >= 0) { hist.splice(i, 1); saveHist(); }
+  }
+  function withG(other, fn){ var keep = g; g = other; try { return fn(); } finally { g = keep; } }
+  function sg(){ return ui.past || g; }
+  function fmtDate(ms){ try { return new Date(ms).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return stamp(ms); } }
+  function seasonRows(){
+    var map = {}, out = [];
+    hist.forEach(function(h){
+      var G = h.g;
+      G.pl.forEach(function(p){
+        var act = p.b.PA || p.b.AB || p.p.BF || p.p.O;
+        if (!act) return;
+        var team = G.teams[p.t].name, k = tkey(team) + '|' + tkey(p.name), r = map[k];
+        if (!r) {
+          r = map[k] = { team: team, name: p.name, num: p.num, pos: p.pos, games: 0, b: {}, p: { O: 0, BF: 0, H: 0, R: 0, BB: 0, K: 0, HBP: 0 }, seen: {} };
+          BCOLS.forEach(function(c){ r.b[c[0]] = 0; });
+          out.push(r);
+        }
+        if (!r.seen[h.id]) { r.seen[h.id] = 1; r.games++; }
+        if (p.num) r.num = p.num;
+        BCOLS.forEach(function(c){ r.b[c[0]] += p.b[c[0]] || 0; });
+        Object.keys(r.p).forEach(function(q){ r.p[q] += p.p[q] || 0; });
+      });
+    });
+    return out.sort(function(a, b){ return a.team.localeCompare(b.team, 'fr') || (b.b.PA - a.b.PA) || a.name.localeCompare(b.name, 'fr'); });
+  }
+  var SCOLS = ['PA', 'AB', 'R', 'H', 'D', 'T', 'HR', 'RBI', 'BB', 'K'];
+  function renderHist(){
+    var list = $('histList');
+    if (!hist.length) list.innerHTML = '<p class="hint" style="font-size:14px">Aucun match terminé pour l\'instant. Chaque match terminé est enregistré ici automatiquement.</p>';
+    else list.innerHTML = hist.map(function(h, i){
+      var G = h.g, a = G.runs[0].reduce(function(x, v){ return x + (v || 0); }, 0), b = G.runs[1].reduce(function(x, v){ return x + (v || 0); }, 0);
+      var del = ui.delHist === h.id;
+      return '<div class="hm"><div><div class="t">' + esc(G.teams[0].name) + ' ' + a + ' – ' + b + ' ' + esc(G.teams[1].name) + '</div>' +
+        '<div class="m">' + esc(fmtDate(h.date)) + ' · ' + fmtClock(G.tEnd != null ? G.tEnd - G.t0 : null) + '</div></div>' +
+        '<div class="b"><button type="button" class="ghost" data-hm="view" data-hi="' + i + '">Voir</button>' +
+        '<button type="button" class="ghost' + (del ? ' warn' : '') + '" data-hm="' + (del ? 'delok' : 'del') + '" data-hi="' + i + '">' + (del ? 'Confirmer' : 'Supprimer') + '</button></div></div>';
+    }).join('');
+    var rows = seasonRows(), box = $('seasonBox');
+    if (!rows.length) { box.innerHTML = ''; return; }
+    var teams = []; rows.forEach(function(r){ if (teams.indexOf(r.team) < 0) teams.push(r.team); });
+    var h = '<div class="statshead"><h2 style="font:500 20px var(--display)">Statistiques de saison</h2><button type="button" class="ghost" id="btnSeasonCsv" data-hm="csv">Export CSV</button></div>';
+    teams.forEach(function(tn){
+      var tr = rows.filter(function(r){ return r.team === tn; });
+      h += '<div class="card sect"><h3>' + esc(tn) + '</h3><h4>Frappeurs</h4><div class="scroll"><table class="st"><thead><tr><th class="pl">Joueur</th><th title="Matchs joués">M</th>' +
+        SCOLS.map(function(k){ var c = BCOLS.filter(function(x){ return x[0] === k; })[0]; return '<th title="' + c[2] + '">' + c[1] + '</th>'; }).join('') +
+        '<th title="Moyenne au bâton">MB</th><th title="MPB + MPU">OPS</th></tr></thead><tbody>';
+      tr.forEach(function(r){
+        if (!r.b.PA) return;
+        var q = rates(r.b);
+        h += '<tr><td class="pl"><span class="pn">' + esc(r.name) + '</span><span class="pm">' + esc(r.num ? '#' + r.num : '') + '</span></td><td>' + r.games + '</td>' +
+          SCOLS.map(function(k){ return '<td>' + r.b[k] + '</td>'; }).join('') + '<td class="key">' + fmt3(q.avg) + '</td><td>' + fmt3(q.ops) + '</td></tr>';
+      });
+      h += '</tbody></table></div>';
+      var pr = tr.filter(function(r){ return r.p.BF > 0 || r.p.O > 0; });
+      if (pr.length) {
+        h += '<h4>Lanceurs</h4><div class="scroll"><table class="st"><thead><tr><th class="pl">Lanceur</th><th>M</th><th title="Manches lancées">MJ</th><th title="Frappeurs affrontés">FA</th><th title="Coups sûrs accordés">CS</th><th title="Points accordés">P</th><th>BB</th><th>K</th></tr></thead><tbody>';
+        pr.forEach(function(r){
+          h += '<tr><td class="pl"><span class="pn">' + esc(r.name) + '</span></td><td>' + r.games + '</td><td>' + ipf(r.p.O) + '</td><td>' + r.p.BF + '</td><td>' + r.p.H + '</td><td>' + r.p.R + '</td><td>' + r.p.BB + '</td><td>' + r.p.K + '</td></tr>';
+        });
+        h += '</tbody></table></div>';
+      }
+      h += '</div>';
+    });
+    box.innerHTML = h;
+  }
+
+  /* ---------- Export CSV ---------- */
+  function csvCell(v){ v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function n3(x){ return x == null ? '' : x.toFixed(3).replace('.', ','); }
+  function csvLines(rows){ return rows.map(function(r){ return r.map(csvCell).join(';'); }).join('\r\n'); }
+  function csvBat(items, withGames){
+    var hdr = ['Équipe', 'Joueur', 'N°', 'Poste'].concat(withGames ? ['Matchs'] : [], BCOLS.map(function(c){ return c[1]; }), ['MB', 'MPB', 'MPU', 'OPS']), out = [hdr];
+    items.forEach(function(r){
+      var q = rates(r.b);
+      out.push([r.team, r.name, r.num, r.pos].concat(withGames ? [r.games] : [], BCOLS.map(function(c){ return r.b[c[0]]; }), [n3(q.avg), n3(q.obp), n3(q.slg), n3(q.ops)]));
+    });
+    return out;
+  }
+  function csvPit(items, withGames){
+    var out = [['Équipe', 'Lanceur', 'N°'].concat(withGames ? ['Matchs'] : [], ['MJ', 'FA', 'CS', 'P', 'BB', 'K', 'FL'])];
+    items.forEach(function(r){
+      out.push([r.team, r.name, r.num].concat(withGames ? [r.games] : [], [ipf(r.p.O), r.p.BF, r.p.H, r.p.R, r.p.BB, r.p.K, r.p.HBP]));
+    });
+    return out;
+  }
+  function matchItems(){
+    var bat = [], pit = [];
+    for (var t = 0; t < 2; t++) {
+      batters(t).forEach(function(p){ bat.push({ team: g.teams[t].name, name: p.name, num: p.num, pos: p.pos, b: p.b }); });
+      pitchers(t).forEach(function(p){ pit.push({ team: g.teams[t].name, name: p.name, num: p.num, p: p.p }); });
+    }
+    return { bat: bat, pit: pit };
+  }
+  function statsCSV(){
+    var it = matchItems();
+    return '﻿' + csvLines([[resultText()], ['Durée', clockText()], []].concat(csvBat(it.bat, false), [[]], csvPit(it.pit, false)));
+  }
+  function seasonCSV(){
+    var rows = seasonRows();
+    return '﻿' + csvLines(csvBat(rows.filter(function(r){ return r.b.PA; }), true).concat([[]], csvPit(rows.filter(function(r){ return r.p.BF > 0 || r.p.O > 0; }), true)));
+  }
+
+  /* ---------- Image du résumé ---------- */
+  function drawSummary(withBanner){
+    var W = 1080, cols = Math.max(g.N, g.inning), A = awards(), pad = 48;
+    var rowsAw = (A.mvp ? 1 : 0) + (A.hit ? 1 : 0);
+    var H = (withBanner ? 330 : 0) + 250 + 190 + rowsAw * 150 + 110;
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var c = cv.getContext('2d'), F = 'Roboto, Arial, sans-serif', y = 0;
+    c.fillStyle = '#F8F9FA'; c.fillRect(0, 0, W, H);
+    if (withBanner) {
+      var im = $('bannerImg');
+      if (im && im.naturalWidth) {
+        var r = Math.max(W / im.naturalWidth, 330 / im.naturalHeight), w = im.naturalWidth * r, h = im.naturalHeight * r;
+        c.drawImage(im, (W - w) / 2, (330 - h) / 2, w, h);
+      } else { c.fillStyle = '#1A73E8'; c.fillRect(0, 0, W, 330); }
+      y = 330;
+    }
+    c.fillStyle = '#1A73E8'; c.fillRect(0, y, W, 250);
+    c.fillStyle = '#fff'; c.textBaseline = 'alphabetic';
+    c.font = '500 34px ' + F; c.textAlign = 'center';
+    c.fillText(g.teams[0].name + '  –  ' + g.teams[1].name, W / 2, y + 70);
+    c.font = '700 110px ' + F; c.fillText(total(0) + ' – ' + total(1), W / 2, y + 180);
+    c.font = '400 28px ' + F; c.fillText(fmtDate(g.t0) + ' · ' + clockText() + (g.over ? '' : ' · en cours'), W / 2, y + 226);
+    y += 290;
+    c.textAlign = 'left'; c.fillStyle = '#202124';
+    var x0 = pad, nameW = 250, cw = Math.min(70, (W - 2 * pad - nameW - 140) / cols);
+    c.font = '500 24px ' + F; c.fillStyle = '#5F6368';
+    for (var i = 1; i <= cols; i++) { c.textAlign = 'center'; c.fillText(String(i), x0 + nameW + (i - 0.5) * cw, y); }
+    c.fillText('P', x0 + nameW + cols * cw + 50, y); c.fillText('CS', x0 + nameW + cols * cw + 110, y);
+    for (var t = 0; t < 2; t++) {
+      var ry = y + 56 + t * 56;
+      c.fillStyle = '#202124'; c.textAlign = 'left'; c.font = '500 28px ' + F;
+      var nm = g.teams[t].name; while (c.measureText(nm).width > nameW - 10 && nm.length > 3) nm = nm.slice(0, -2);
+      c.fillText(nm === g.teams[t].name ? nm : nm + '…', x0, ry);
+      c.textAlign = 'center'; c.font = '400 28px ' + F;
+      for (i = 1; i <= cols; i++) { var v = g.runs[t][i - 1]; c.fillText(v != null ? String(v) : '–', x0 + nameW + (i - 0.5) * cw, ry); }
+      c.font = '700 30px ' + F; c.fillStyle = '#1A73E8';
+      c.fillText(String(total(t)), x0 + nameW + cols * cw + 50, ry);
+      c.fillStyle = '#202124'; c.font = '400 28px ' + F; c.fillText(String(hitsOf(t)), x0 + nameW + cols * cw + 110, ry);
+    }
+    y += 190;
+    function award(label, p, detail){
+      c.fillStyle = '#fff'; c.strokeStyle = '#DADCE0'; c.lineWidth = 2;
+      c.beginPath(); c.roundRect ? c.roundRect(pad, y, W - 2 * pad, 124, 20) : c.rect(pad, y, W - 2 * pad, 124); c.fill(); c.stroke();
+      c.textAlign = 'left'; c.fillStyle = '#174EA6'; c.font = '500 22px ' + F; c.fillText(label.toUpperCase(), pad + 28, y + 40);
+      c.fillStyle = '#202124'; c.font = '500 36px ' + F; c.fillText(who(p) + '  ·  ' + g.teams[p.t].name, pad + 28, y + 80);
+      c.fillStyle = '#5F6368'; c.font = '400 24px ' + F; c.fillText(detail, pad + 28, y + 110);
+      y += 150;
+    }
+    if (A.mvp) award('MVP', A.mvp.p, lineFor(A.mvp.p));
+    if (A.hit) award('Meilleur frappeur', A.hit.p, hitLine(A.hit.p));
+    c.textAlign = 'center'; c.fillStyle = '#5F6368'; c.font = '400 22px ' + F; c.fillText('Marque Simple', W / 2, H - 36);
+    return cv;
+  }
+  function summaryBlob(cb){
+    var tryDraw = function(wb){
+      var cv = drawSummary(wb);
+      try { cv.toBlob(function(b){ if (b) cb(b); else if (wb) tryDraw(false); else cb(null); }, 'image/png'); }
+      catch (e) { if (wb) tryDraw(false); else cb(null); }
+    };
+    tryDraw(true);
+  }
+
+  /* ---------- Sauvegarde complète ---------- */
+  function exportData(){
+    return JSON.stringify({ app: 'marque-simple', v: 1, date: Date.now(), roster: roster, hist: hist, place: (typeof place === 'string' ? place : '') });
+  }
+  function importData(text){
+    var o;
+    try { o = JSON.parse(String(text).replace(/^﻿/, '')); } catch (e) { throw new Error('Fichier illisible'); }
+    if (!o || o.app !== 'marque-simple') throw new Error('Ce fichier n\'est pas une sauvegarde Marque Simple');
+    var nt = 0, nm = 0;
+    if (o.roster && o.roster.teams) Object.keys(o.roster.teams).forEach(function(k){
+      var it = o.roster.teams[k]; if (!it || !it.name) return;
+      var tm = roster.teams[k];
+      if (!tm) { roster.teams[k] = { name: it.name, players: it.players || [], lineup: it.lineup || [], pit: it.pit || { num: '', name: '' } }; nt++; return; }
+      (it.players || []).forEach(function(p){
+        if (!tm.players.some(function(q){ return tkey(q.name) === tkey(p.name); })) tm.players.push(p);
+      });
+    });
+    if (Array.isArray(o.hist)) o.hist.forEach(function(h){
+      if (h && h.g && h.g.pl && h.id != null && histIndex(h.id) < 0) { hist.push(h); nm++; }
+    });
+    hist.sort(function(a, b){ return b.date - a.date; });
+    if (hist.length > 60) hist.length = 60;
+    saveRoster(); saveHist();
+    return { teams: nt, matches: nm };
+  }
+
+  /* ---------- Mes équipes ---------- */
+  var teamKeys = [];
+  function sortedKeys(){
+    return Object.keys(roster.teams).sort(function(a, b){ return roster.teams[a].name.localeCompare(roster.teams[b].name, 'fr'); });
+  }
+  function createTeam(name){
+    var nm = String(name || '').trim(), k = tkey(nm);
+    if (!k || roster.teams[k]) return false;
+    roster.teams[k] = { name: nm, players: [], lineup: [], pit: { num: '', name: '' } };
+    saveRoster();
+    return true;
+  }
+  function rosterRemovePlayer(k, i){
+    var tm = roster.teams[k];
+    if (!tm || !tm.players[i]) return;
+    var nm = String(tm.players[i].name || '').trim().toLowerCase();
+    tm.players.splice(i, 1);
+    if (nm) {
+      (tm.lineup || []).forEach(function(r){ if (String(r.name || '').trim().toLowerCase() === nm) { r.name = ''; r.num = ''; r.pos = ''; } });
+      if (tm.pit && String(tm.pit.name || '').trim().toLowerCase() === nm) tm.pit = { num: '', name: '' };
+    }
+    saveRoster();
+  }
+  function purgeBlank(){
+    Object.keys(roster.teams).forEach(function(k){
+      roster.teams[k].players = roster.teams[k].players.filter(function(p){ return String(p.name || '').trim(); });
+    });
+    saveRoster();
+  }
+  function renderTeams(){
+    teamKeys = sortedKeys();
+    var box = $('teamsList');
+    if (!teamKeys.length) {
+      box.innerHTML = '<div class="card"><p class="hint" style="font-size:14px">Aucune équipe enregistrée. Créez-en une ci-dessus, ou lancez une partie : les deux équipes et leurs joueurs sont enregistrés automatiquement.</p></div>';
+      return;
+    }
+    box.innerHTML = teamKeys.map(function(k, ti){
+      var tm = roster.teams[k], del = ui.delTeam === k;
+      var h = '<div class="card team"><div class="rp-head"><h3 class="teamh">' + esc(tm.name) + '</h3>' +
+        '<button type="button" class="ghost' + (del ? ' warn' : '') + '" data-tm="' + (del ? 'delok' : 'del') + '" data-ti="' + ti + '">' + (del ? 'Confirmer la suppression' : 'Supprimer l\'équipe') + '</button></div>';
+      if (tm.players.length) h += '<div class="tp-head"><span>N°</span><span>Nom</span><span>Poste</span><span></span></div>';
+      else h += '<p class="hint">Aucun joueur. Ajoutez-en avec le bouton ci-dessous.</p>';
+      tm.players.forEach(function(p, i){
+        var id = 'tp' + ti + '-' + i;
+        h += '<div class="tp-row">' +
+          '<input type="text" inputmode="numeric" maxlength="3" id="' + id + '-n" data-tp="num" data-ti="' + ti + '" data-i="' + i + '" value="' + esc(p.num || '') + '" aria-label="Numéro de ' + esc(p.name || 'ce joueur') + '" autocomplete="off">' +
+          '<input type="text" maxlength="28" id="' + id + '-m" data-tp="name" data-ti="' + ti + '" data-i="' + i + '" value="' + esc(p.name || '') + '" placeholder="Nom du joueur" aria-label="Nom du joueur" autocomplete="off">' +
+          '<select id="' + id + '-p" data-tp="pos" data-ti="' + ti + '" data-i="' + i + '" aria-label="Poste de ' + esc(p.name || 'ce joueur') + '">' + posOptions(p.pos || '', false, true) + '</select>' +
+          '<button type="button" class="xbtn" data-tm="delp" data-ti="' + ti + '" data-i="' + i + '" aria-label="Supprimer ' + esc(p.name || 'ce joueur') + '">×</button></div>';
+      });
+      return h + '<div class="rowbtns"><button type="button" class="ghost" data-tm="addp" data-ti="' + ti + '">+ Ajouter un joueur</button></div></div>';
+    }).join('');
+  }
+  function onTeamInput(e){
+    var el = e.target, f = el.getAttribute ? el.getAttribute('data-tp') : null;
+    if (!f) return;
+    var tm = roster.teams[teamKeys[+el.getAttribute('data-ti')]], p = tm && tm.players[+el.getAttribute('data-i')];
+    if (!p) return;
+    p[f] = el.value;
+    saveRoster();
+  }
+
+  /* ---------- Remplacement ---------- */
+  function fillSlots(){
+    var t = +$('subT').value, tm = g.teams[t];
+    var h = tm.order.map(function(id, i){
+      var p = g.pl[id];
+      return '<option value="' + i + '">' + (i + 1) + '. ' + esc(p.name) + (p.pos ? ' (' + esc(p.pos) + ')' : '') + '</option>';
+    }).join('') + '<option value="-1">Aucun · lanceur seulement</option>';
+    $('subSlot').innerHTML = h;
+    if (t === g.half) $('subSlot').value = String(tm.spot);
+    syncPos();
+  }
+  function syncPos(){
+    var lock = $('subSlot').value === '-1';
+    if (lock) $('subPos').value = 'L';
+    $('subPos').disabled = lock;
+  }
+  function openSub(){
+    ui.sub = !ui.sub;
+    if (ui.sub) {
+      $('subT').innerHTML = '<option value="0">' + esc(g.teams[0].name) + '</option><option value="1">' + esc(g.teams[1].name) + '</option>';
+      $('subT').value = String(g.half);
+      $('subPos').innerHTML = posOptions('', true);
+      $('subName').value = ''; $('subNum').value = '';
+      fillSlots();
+    }
+    render();
+  }
+
+  /* ---------- Événements ---------- */
+  document.addEventListener('click', function(e){
+    var t = e.target; if (!t.closest) return;
+    var b = t.closest('[data-act]');
+    if (b && !b.disabled) { buzz(b.getAttribute('data-act')); act(b.getAttribute('data-act')); return; }
+    b = t.closest('[data-hm]');
+    if (b) { histAction(b.getAttribute('data-hm'), +b.getAttribute('data-hi')); return; }
+    b = t.closest('[data-fc]');
+    if (b && g && ui.fc) { fcChoose(+b.getAttribute('data-fc')); return; }
+    if (t.closest('[data-fcx]')) { ui.fc = false; render(); return; }
+    b = t.closest('[data-ract]');
+    if (b && g && ui.base != null) {
+      var a = b.getAttribute('data-ract');
+      if (a === 'place') placeRunner(ui.base, +($('rpSel') ? $('rpSel').value : NaN));
+      else runnerAct(ui.base, a);
+      return;
+    }
+    if (t.closest('[data-rclose]')) { ui.base = null; render(); return; }
+    b = t.closest('[data-bench]');
+    if (b) {
+      var bt = +b.getAttribute('data-t'), bk = +b.getAttribute('data-k'), ba = b.getAttribute('data-bench');
+      if (ba === 'add') benchAdd(bt, bk);
+      else if (ba === 'rm') benchRemove(bt, bk);
+      else if (ba === 'forget') { ui.forget = bt; renderBench(bt); }
+      else if (ba === 'forgetOk') forgetTeam(bt);
+      return;
+    }
+    b = t.closest('[data-tm]');
+    if (b) {
+      var ti = +b.getAttribute('data-ti'), ky = teamKeys[ti], ta = b.getAttribute('data-tm'), tmm = roster.teams[ky];
+      if (!tmm) return;
+      if (ta === 'addp') {
+        tmm.players.push({ num: '', name: '', pos: '' }); saveRoster(); renderTeams();
+        var nf = $('tp' + ti + '-' + (tmm.players.length - 1) + '-m');
+        if (nf && nf.focus) nf.focus();
+      }
+      else if (ta === 'delp') { rosterRemovePlayer(ky, +b.getAttribute('data-i')); renderTeams(); }
+      else if (ta === 'del') { ui.delTeam = ky; renderTeams(); }
+      else if (ta === 'delok') { delete roster.teams[ky]; ui.delTeam = null; saveRoster(); renderTeams(); toast('Équipe supprimée'); }
+      return;
+    }
+    b = t.closest('[data-load]');
+    if (b) {
+      var lt = +b.getAttribute('data-load'), lkey = $('saved' + lt).value;
+      if (!lkey) toast('Choisissez d\'abord une équipe enregistrée');
+      else if (loadTeam(lt, lkey)) toast('Équipe chargée');
+      return;
+    }
+    b = t.closest('[data-row]');
+    if (b) {
+      var tt = +b.getAttribute('data-t'), rows = draft.teams[tt].rows;
+      if (b.getAttribute('data-row') === 'add') { if (rows.length < 15) rows.push(blankRow()); else toast('15 frappeurs au maximum'); }
+      else if (rows.length > 1) rows.pop();
+      saveDraft(); renderSetup();
+    }
+  });
+  [1, 2, 3].forEach(function(n){
+    var el = $('base' + n), i = +el.getAttribute('data-base');
+    function open(){ if (!g || g.over) return; ui.fc = false; ui.base = ui.base === i ? null : i; render(); }
+    el.addEventListener('click', open);
+    el.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  });
+  $('setupForm').addEventListener('input', function(e){
+    onDraft(e);
+    if (e.inputType === 'insertReplacementText') fillFrom(e);
+  });
+  $('setupForm').addEventListener('change', function(e){
+    onDraft(e, true);
+    fillFrom(e);
+    if (e.target && e.target.name === 'inn') { draft.N = +e.target.value; saveDraft(); }
+    if (e.target && e.target.id === 'ruleMercy') { draft.rules.mercy = e.target.value; saveDraft(); }
+    if (e.target && e.target.id === 'ruleGhost') { draft.rules.ghost = !!e.target.checked; saveDraft(); }
+  });
+  $('btnNew').addEventListener('click', openSetup);
+  $('btnTeams').addEventListener('click', function(){ ui.delTeam = null; view = 'teams'; render(); window.scrollTo(0, 0); });
+  $('btnTeamsBack').addEventListener('click', function(){ purgeBlank(); ui.delTeam = null; ui.delHist = null; view = 'setup'; renderSetup(); render(); window.scrollTo(0, 0); });
+  $('teamsList').addEventListener('input', onTeamInput);
+  $('teamsList').addEventListener('change', onTeamInput);
+  $('newTeamForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = $('newTeamName').value;
+    if (createTeam(v)) { $('newTeamName').value = ''; renderTeams(); toast('Équipe créée'); }
+    else toast(tkey(v) ? 'Cette équipe existe déjà' : 'Saisissez le nom de l\'équipe');
+  });
+  $('btnStats').addEventListener('click', function(){ view = 'stats'; render(); window.scrollTo(0, 0); });
+  $('btnStatsEnd').addEventListener('click', function(){ view = 'stats'; render(); window.scrollTo(0, 0); });
+  $('btnBack').addEventListener('click', function(){
+    if (ui.past) { ui.past = null; view = 'hist'; }
+    else view = 'game';
+    render(); window.scrollTo(0, 0);
+  });
+  function buzz(a){
+    try { if (vibOn && navigator.vibrate) navigator.vibrate(/^(out|k|dp|fc|end)$/.test(a) ? 30 : 12); } catch (e) {}
+  }
+  function renderVib(){ $('btnVib').textContent = vibOn ? '📳' : '📴'; $('btnVib').classList.toggle('off', !vibOn); $('btnVib').setAttribute('aria-pressed', vibOn ? 'true' : 'false'); }
+  try { vibOn = localStorage.getItem(VKEY) !== '0'; } catch (e) {}
+  $('btnVib').addEventListener('click', function(){
+    vibOn = !vibOn; try { localStorage.setItem(VKEY, vibOn ? '1' : '0'); } catch (e) {}
+    renderVib(); toast(vibOn ? 'Vibration activée' : 'Vibration désactivée'); if (vibOn) buzz('x');
+  });
+  renderVib();
+  $('btnHist').addEventListener('click', function(){ ui.delHist = null; view = 'hist'; render(); window.scrollTo(0, 0); });
+  function histAction(a, i){
+    var h = hist[i];
+    if (a === 'csv') { saveFile('marque-simple-saison.csv', seasonCSV(), 'text/csv'); return; }
+    if (!h) return;
+    if (a === 'view') { ui.past = h.g; view = 'stats'; render(); window.scrollTo(0, 0); }
+    else if (a === 'del') { ui.delHist = h.id; renderHist(); }
+    else if (a === 'delok') { hist.splice(i, 1); ui.delHist = null; saveHist(); renderHist(); toast('Match supprimé'); }
+  }
+  $('btnCsv').addEventListener('click', function(){
+    var G = sg(); if (!G) return;
+    withG(G, function(){ saveFile('marque-simple-' + slug(g.teams[0].name) + '-' + slug(g.teams[1].name) + '-' + stamp(g.t0) + '.csv', statsCSV(), 'text/csv'); });
+  });
+  $('btnImg').addEventListener('click', function(){
+    var G = sg(); if (!G) return;
+    withG(G, function(){
+      var nm = 'resume-' + slug(g.teams[0].name) + '-' + slug(g.teams[1].name) + '-' + stamp(g.t0) + '.png';
+      summaryBlob(function(b){ if (b) saveFile(nm, b, 'image/png'); else toast('Image impossible ici'); });
+    });
+  });
+  $('btnBackup').addEventListener('click', function(){ saveFile('marque-simple-sauvegarde-' + stamp() + '.json', exportData(), 'application/json'); });
+  $('btnBackupCopy').addEventListener('click', function(){
+    var ta = $('importTxt'); ta.value = exportData(); ta.parentNode.open = true;
+    try { navigator.clipboard.writeText(ta.value).then(function(){ toast('Copié'); }, function(){ ta.select(); toast('Texte sélectionné'); }); } catch (e) { ta.select(); }
+  });
+  $('btnImportPick').addEventListener('click', function(){ $('importIn').click(); });
+  function doImport(text){
+    try {
+      var r = importData(text);
+      renderHist(); toast('Importé : ' + r.teams + ' équipe' + (r.teams > 1 ? 's' : '') + ', ' + r.matches + ' match' + (r.matches > 1 ? 's' : ''));
+    } catch (e) { toast(e.message || 'Import impossible'); }
+  }
+  $('importIn').addEventListener('change', function(){
+    var f = this.files && this.files[0]; if (!f) return;
+    var rd = new FileReader(); rd.onload = function(){ doImport(String(rd.result)); }; rd.readAsText(f);
+    this.value = '';
+  });
+  $('btnImportTxt').addEventListener('click', function(){ doImport($('importTxt').value); });
+  $('resume').addEventListener('click', function(){ view = 'game'; render(); window.scrollTo(0, 0); });
+  $('btnCopy').addEventListener('click', function(){ if (g) copyText(summary(), 'copyArea'); });
+  $('btnCopyStats').addEventListener('click', function(){ if (g) copyText(statsText(), 'copyArea2'); });
+  $('btnSub').addEventListener('click', function(){ if (g && !g.over) openSub(); });
+  $('subCancel').addEventListener('click', function(){ ui.sub = false; render(); });
+  $('subT').addEventListener('change', fillSlots);
+  $('subSlot').addEventListener('change', syncPos);
+  $('subOk').addEventListener('click', function(){
+    if (!g || g.over) return;
+    var name = $('subName').value.trim();
+    if (!name) { toast('Indiquez le nom du joueur'); return; }
+    substitute(+$('subT').value, +$('subSlot').value, name, $('subNum').value.trim(), $('subPos').value);
+  });
+  $('setupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var cfg = { N: draft.N || 7, teams: [], rules: { mercy: parseMercy(draft.rules && draft.rules.mercy), ghost: !!(draft.rules && draft.rules.ghost) } };
+    draft.teams.forEach(function(d, t){
+      cfg.teams.push({
+        name: d.name.trim() || (t ? 'Locaux' : 'Visiteurs'),
+        rows: d.rows.map(function(r){ return { num: r.num.trim(), name: r.name.trim(), pos: r.pos }; }),
+        pit: { num: d.pit.num.trim(), name: d.pit.name.trim() }
+      });
+    });
+    newGame(cfg);
+    rememberTeams(draft.teams);
+    view = 'game'; $('copyArea').hidden = true; $('copyArea2').hidden = true;
+    commit(); window.scrollTo(0, 0);
+  });
+
+  /* ---------- Chronomètre ---------- */
+  function elapsedMs(){
+    if (!g || g.t0 == null) return null;
+    return Math.max(0, (g.tEnd != null ? g.tEnd : Date.now()) - g.t0);
+  }
+  function fmtClock(ms){
+    if (ms == null) return '--:--';
+    var s = Math.floor(ms / 1000), m = Math.floor(s / 60);
+    s = s % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  function clockText(){ return fmtClock(elapsedMs()); }
+  function tick(){
+    if (g && !g.over && view === 'game') $('clock').textContent = clockText();
+  }
+  setInterval(tick, 500);
+  document.addEventListener('visibilitychange', tick);
+
+  /* ---------- Écran allumé pendant le match ---------- */
+  var wl = null;
+  function wlSync(){
+    var want = !!(g && !g.over && view === 'game' && !document.hidden);
+    try {
+      if (want && !wl && navigator.wakeLock) {
+        navigator.wakeLock.request('screen').then(function(s){
+          wl = s;
+          s.addEventListener('release', function(){ wl = null; });
+        }, function(){});
+      } else if (!want && wl) { wl.release(); wl = null; }
+    } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', wlSync);
+
+  /* ---------- Bannière photo ---------- */
+  var BKEY = 'marque-simple-banner-v1', LKEY = 'marque-simple-lieu-v1', WKEY = 'marque-simple-meteo-v1', DEFAULT_BANNER = 'banner.jpg';
+  function setBanner(src, custom, quiet){
+    $('bannerImg').src = src;
+    $('banner').classList.remove('noimg');
+    $('photoReset').hidden = !custom;
+    try {
+      if (custom) localStorage.setItem(BKEY, src); else localStorage.removeItem(BKEY);
+    } catch (e) {
+      if (custom && !quiet) toast('Photo changée, mais trop lourde pour être mémorisée');
+      return;
+    }
+    if (!quiet) toast(custom ? 'Photo remplacée' : 'Photo d\'origine rétablie');
+  }
+  function onPhoto(file){
+    if (!file || !/^image\//.test(file.type)) { toast('Choisissez un fichier image'); return; }
+    var rd = new FileReader();
+    rd.onerror = function(){ toast('Image illisible'); };
+    rd.onload = function(){
+      var img = new Image();
+      img.onerror = function(){ toast('Image illisible'); };
+      img.onload = function(){
+        var sc = Math.min(1, 1600 / img.naturalWidth), c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.naturalWidth * sc));
+        c.height = Math.max(1, Math.round(img.naturalHeight * sc));
+        var cx = c.getContext('2d');
+        cx.fillStyle = '#fff'; cx.fillRect(0, 0, c.width, c.height);
+        cx.drawImage(img, 0, 0, c.width, c.height);
+        setBanner(c.toDataURL('image/jpeg', 0.82), true);
+      };
+      img.src = rd.result;
+    };
+    rd.readAsDataURL(file);
+  }
+  $('bannerImg').addEventListener('error', function(){ $('banner').classList.add('noimg'); });
+  $('photoBtn').addEventListener('click', function(){ $('photoIn').click(); });
+  $('photoIn').addEventListener('change', function(){
+    var f = $('photoIn').files && $('photoIn').files[0];
+    if (f) onPhoto(f);
+    $('photoIn').value = '';
+  });
+  $('photoReset').addEventListener('click', function(){ setBanner(DEFAULT_BANNER, false); });
+  try {
+    var savedBanner = localStorage.getItem(BKEY);
+    if (savedBanner && savedBanner.indexOf('data:image/') === 0) setBanner(savedBanner, true, true);
+  } catch (e) {}
+
+  /* ---------- Lieu et météo ---------- */
+  var place = '', WX = null, wxBusy = false, wxFail = false;
+  try { place = localStorage.getItem(LKEY) || ''; } catch (e) {}
+  try { var rawW = localStorage.getItem(WKEY); if (rawW) WX = JSON.parse(rawW); } catch (e) { WX = null; }
+  if (WX && WX.place !== place) WX = null;
+  function wxEmoji(code, day){
+    if (code === 0) return day ? '☀️' : '🌙';
+    if (code === 1) return day ? '🌤️' : '🌙';
+    if (code === 2) return day ? '⛅' : '☁️';
+    if (code === 3) return '☁️';
+    if (code >= 95) return '⛈️';
+    if (code >= 85) return '🌨️';
+    if (code === 80) return '🌦️';
+    if (code >= 80) return '🌧️';
+    if (code >= 71) return '🌨️';
+    if (code >= 56) return '🌧️';
+    if (code >= 51) return '🌦️';
+    if (code >= 45) return '🌫️';
+    return '☁️';
+  }
+  function wxText(code){
+    if (code === 0) return 'Ciel dégagé';
+    if (code === 1) return 'Plutôt dégagé';
+    if (code === 2) return 'Partiellement nuageux';
+    if (code === 3) return 'Couvert';
+    if (code >= 95) return 'Orage';
+    if (code >= 85) return 'Averses de neige';
+    if (code >= 80) return 'Averses';
+    if (code >= 71) return 'Neige';
+    if (code >= 56) return 'Pluie';
+    if (code >= 51) return 'Bruine';
+    return 'Brouillard';
+  }
+  function wxFresh(){ return !!(WX && WX.place === place && WX.t && Date.now() - WX.t < 6 * 3600 * 1000 && WX.temp != null); }
+  function renderWx(){
+    $('wxPlace').textContent = place || 'Ajouter le lieu';
+    $('wxClear').hidden = !place;
+    var now = $('wxNow'), fresh = wxFresh();
+    if (place && fresh) {
+      now.hidden = false;
+      now.textContent = wxEmoji(WX.code, WX.day) + ' ' + Math.round(WX.temp) + '°';
+      var d = new Date(WX.t);
+      now.title = wxText(WX.code) + ' · mis à jour à ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    } else now.hidden = true;
+    $('wxLink').hidden = !(place && !fresh);
+    if (place) $('wxLink').href = 'https://www.google.com/search?q=' + encodeURIComponent('météo ' + place);
+    $('wxHint').textContent = (wxFail && !fresh)
+      ? 'Mise à jour automatique indisponible ici (réseau ou page restreinte). Le lien Météo s\'ouvre dans un nouvel onglet.'
+      : 'La météo se met à jour toute seule dès que le lieu est enregistré.';
+  }
+  function getJSON(url){
+    var ctl = window.AbortController ? new AbortController() : null;
+    var to = ctl ? setTimeout(function(){ ctl.abort(); }, 9000) : null;
+    return fetch(url, ctl ? { signal: ctl.signal } : {}).then(function(r){
+      if (to) clearTimeout(to);
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    }, function(e){ if (to) clearTimeout(to); throw e; });
+  }
+  function wxGeocode(name){
+    var q = String(name).split(',')[0].trim();
+    return getJSON('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=1&language=fr&format=json').then(function(d){
+      var r = d && d.results && d.results[0];
+      return r ? { lat: r.latitude, lon: r.longitude } : null;
+    });
+  }
+  function wxForecast(lat, lon){
+    return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,weather_code,is_day&timezone=auto').then(function(d){
+      var c = d && d.current;
+      if (!c || c.temperature_2m == null) throw new Error('format');
+      return { temp: c.temperature_2m, code: c.weather_code, day: c.is_day };
+    });
+  }
+  function wxUpdate(force){
+    if (!place || wxBusy) return;
+    if (!force && wxFresh() && Date.now() - WX.t < 10 * 60 * 1000) return;
+    wxBusy = true;
+    var p = place;
+    var geo = (WX && WX.place === p && WX.lat != null) ? Promise.resolve({ lat: WX.lat, lon: WX.lon }) : wxGeocode(p);
+    geo.then(function(c){
+      if (!c) { wxFail = false; toast('Lieu introuvable. Essayez le nom de la ville.'); return; }
+      return wxForecast(c.lat, c.lon).then(function(w){
+        if (p !== place) return;
+        wxFail = false;
+        WX = { place: p, lat: c.lat, lon: c.lon, temp: w.temp, code: w.code, day: w.day, t: Date.now() };
+        try { localStorage.setItem(WKEY, JSON.stringify(WX)); } catch (e) {}
+      });
+    }).catch(function(){ wxFail = true; }).then(function(){ wxBusy = false; renderWx(); });
+  }
+  function savePlace(p){
+    var np = String(p || '').trim().slice(0, 40);
+    if (np !== place) { WX = null; try { localStorage.removeItem(WKEY); } catch (e) {} }
+    place = np;
+    try { if (place) localStorage.setItem(LKEY, place); else localStorage.removeItem(LKEY); } catch (e) {}
+    $('wxPanel').hidden = true; $('wxBtn').setAttribute('aria-expanded', 'false');
+    renderWx();
+    if (place) wxUpdate(true);
+  }
+  function wxLocate(){
+    if (!navigator.geolocation) { toast('Position indisponible sur cet appareil'); return; }
+    toast('Recherche de la position…');
+    navigator.geolocation.getCurrentPosition(function(pos){
+      place = 'Ma position';
+      try { localStorage.setItem(LKEY, place); } catch (e) {}
+      WX = { place: place, lat: pos.coords.latitude, lon: pos.coords.longitude, temp: null, code: null, day: 1, t: 0 };
+      $('wxPanel').hidden = true; $('wxBtn').setAttribute('aria-expanded', 'false');
+      renderWx(); wxUpdate(true);
+    }, function(){ toast('Position refusée ou indisponible ici. Saisissez le lieu.'); }, { timeout: 10000, maximumAge: 600000 });
+  }
+  $('wxBtn').addEventListener('click', function(){
+    var pn = $('wxPanel');
+    pn.hidden = !pn.hidden;
+    $('wxBtn').setAttribute('aria-expanded', pn.hidden ? 'false' : 'true');
+    if (!pn.hidden) { $('wxIn').value = place === 'Ma position' ? '' : place; $('wxIn').focus(); }
+  });
+  $('wxPanel').addEventListener('submit', function(e){ e.preventDefault(); savePlace($('wxIn').value); });
+  $('wxClear').addEventListener('click', function(){ $('wxIn').value = ''; savePlace(''); });
+  $('wxGeo').addEventListener('click', wxLocate);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) wxUpdate(false); });
+  setInterval(function(){ if (!document.hidden) wxUpdate(false); }, 5 * 60 * 1000);
+  renderWx();
+  wxUpdate(false);
+
+  draft = loadDraft();
+  loadRoster();
+  loadHist();
+  load();
+  if (g) view = 'game';
+  renderSetup();
+  render();
+
+  if (window.__TEST__) window.__marque = {
+    act: act, newGame: newGame, state: function(){ return g; }, undoLen: function(){ return undo.length; },
+    runnerAct: runnerAct, placeRunner: placeRunner, substitute: substitute, statsText: statsText, defaultDraft: defaultDraft,
+    rememberTeams: rememberTeams, loadTeam: loadTeam, benchAdd: benchAdd, benchRemove: benchRemove, forgetTeam: forgetTeam,
+    roster: function(){ return roster; }, draft: function(){ return draft; }, POS: POS, fmtClock: fmtClock, elapsedMs: elapsedMs,
+    hist: function(){ return hist; }, seasonRows: seasonRows, statsCSV: statsCSV, seasonCSV: seasonCSV, exportData: exportData, importData: importData,
+    inningCard: inningCard, parseMercy: parseMercy, commit: commit,
+    fcChoose: fcChoose, awards: awards, createTeam: createTeam, rosterRemovePlayer: rosterRemovePlayer, wxEmoji: wxEmoji,
+    openBase: function(i){ ui.base = i; }
+  };
+})();
+</script>
+
+</body></html>
